@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import pandas as pd
 
 
 class Paper:
@@ -21,6 +22,7 @@ class Paper:
 
     def __str__(self) -> str:
         return (f"title: {self.title}\n"
+                f"authors: {self.authors}\n"
                 f"link: {self.link}\n"
                 f"pdf_link: {self.pdf_link}\n"
                 f"term: {self.term}\n")
@@ -68,7 +70,7 @@ class Search:
             query = f"id_list={','.join(self.id_list)}"
         else:
             raise ValueError("Must provide query or id_list")
-        
+
         url = (f"{base_url}"
                f"{query}&start={self.start}"
                f"&max_results={self.max_results}"
@@ -91,9 +93,10 @@ class Search:
         updated = xml.find('updated').text
         published = xml.find('published').text
         title = xml.find('title').text
-        authors = [author.find('name') for author in xml.find_all('author')]
+        authors = [author.find('name').text for author in xml.find_all('author')]
         summary = xml.find('summary').text
-        comment = xml.find('arxiv:comment').text if xml.find('arxiv:comment') else None
+        comment = xml.find('arxiv:comment').text if xml.find(
+            'arxiv:comment') else None
         link = xml.find("link", attrs={"rel": "alternate"})['href']
         pdf_link = xml.find("link", attrs={"title": "pdf"})['href']
         term = xml.find('arxiv:primary_category')['term']
@@ -108,3 +111,8 @@ class Search:
             paper = self._parse_xml(entry)
             papers.append(paper)
         return papers
+
+    def to_dataframe(self) -> pd.DataFrame:
+        papers = self.results()
+        df = pd.DataFrame([paper.to_dict() for paper in papers])
+        return df
