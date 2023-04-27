@@ -86,7 +86,6 @@ class Search:
         url = self._url()
         response = requests.get(url)
         soup = BeautifulSoup(response.text, 'xml')
-        print(soup)
         if soup.find("entry").find("title", recursive=False).text == "Error":
             print(url)
             raise ValueError("Invalid query or id_list")
