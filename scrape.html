@@ -572,394 +572,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span>:</span>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>            failed.setdefault(cat, []).append(start)</span>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Error at </span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss"> from </span><span class="sc">{</span>start<span class="sc">}</span><span class="ss"> to </span><span class="sc">{</span>end<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Querying astro-ph</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>100%|██████████| 8/8 [03:49&lt;00:00, 28.69s/it]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Querying cond-mat</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>100%|██████████| 8/8 [03:37&lt;00:00, 27.21s/it]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Querying gr-qc</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 12%|█▎        | 1/8 [00:00&lt;00:01,  4.02it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:gr-qc.*&amp;start=0&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at gr-qc from 0 to 2000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 25%|██▌       | 2/8 [00:00&lt;00:01,  4.19it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:gr-qc.*&amp;start=2000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at gr-qc from 2000 to 4000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 38%|███▊      | 3/8 [00:00&lt;00:01,  3.76it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:gr-qc.*&amp;start=4000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at gr-qc from 4000 to 6000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 50%|█████     | 4/8 [00:01&lt;00:01,  3.95it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:gr-qc.*&amp;start=6000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at gr-qc from 6000 to 8000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 62%|██████▎   | 5/8 [00:01&lt;00:00,  4.09it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:gr-qc.*&amp;start=8000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at gr-qc from 8000 to 10000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 75%|███████▌  | 6/8 [00:01&lt;00:00,  4.18it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:gr-qc.*&amp;start=10000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at gr-qc from 10000 to 12000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 88%|████████▊ | 7/8 [00:01&lt;00:00,  4.17it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:gr-qc.*&amp;start=12000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at gr-qc from 12000 to 14000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>100%|██████████| 8/8 [00:01&lt;00:00,  4.11it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:gr-qc.*&amp;start=14000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at gr-qc from 14000 to 16000
-Querying hep-ex</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 12%|█▎        | 1/8 [00:00&lt;00:01,  4.16it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:hep-ex.*&amp;start=0&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at hep-ex from 0 to 2000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 25%|██▌       | 2/8 [00:00&lt;00:01,  4.25it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:hep-ex.*&amp;start=2000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at hep-ex from 2000 to 4000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 38%|███▊      | 3/8 [00:00&lt;00:01,  4.33it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:hep-ex.*&amp;start=4000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at hep-ex from 4000 to 6000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 50%|█████     | 4/8 [00:00&lt;00:00,  4.39it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:hep-ex.*&amp;start=6000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at hep-ex from 6000 to 8000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 62%|██████▎   | 5/8 [00:01&lt;00:00,  4.39it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:hep-ex.*&amp;start=8000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at hep-ex from 8000 to 10000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 75%|███████▌  | 6/8 [00:01&lt;00:00,  4.38it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:hep-ex.*&amp;start=10000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at hep-ex from 10000 to 12000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 88%|████████▊ | 7/8 [00:01&lt;00:00,  4.37it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:hep-ex.*&amp;start=12000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at hep-ex from 12000 to 14000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>100%|██████████| 8/8 [00:01&lt;00:00,  4.36it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:hep-ex.*&amp;start=14000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at hep-ex from 14000 to 16000
-Querying math-ph</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 12%|█▎        | 1/8 [00:00&lt;00:01,  4.46it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:math-ph.*&amp;start=0&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at math-ph from 0 to 2000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 25%|██▌       | 2/8 [00:00&lt;00:01,  4.46it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:math-ph.*&amp;start=2000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at math-ph from 2000 to 4000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 38%|███▊      | 3/8 [00:00&lt;00:01,  4.36it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:math-ph.*&amp;start=4000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at math-ph from 4000 to 6000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 50%|█████     | 4/8 [00:00&lt;00:00,  4.34it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:math-ph.*&amp;start=6000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at math-ph from 6000 to 8000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 62%|██████▎   | 5/8 [00:01&lt;00:00,  4.37it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:math-ph.*&amp;start=8000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at math-ph from 8000 to 10000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 75%|███████▌  | 6/8 [00:01&lt;00:00,  4.40it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:math-ph.*&amp;start=10000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at math-ph from 10000 to 12000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 88%|████████▊ | 7/8 [00:01&lt;00:00,  4.36it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:math-ph.*&amp;start=12000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at math-ph from 12000 to 14000
-No results found for http://export.arxiv.org/api/query?search_query=cat:math-ph.*&amp;start=14000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at math-ph from 14000 to 16000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>100%|██████████| 8/8 [00:01&lt;00:00,  4.40it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Querying nlin</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>100%|██████████| 8/8 [04:21&lt;00:00, 32.63s/it]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Querying nucl-ex</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 12%|█▎        | 1/8 [00:00&lt;00:01,  4.33it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-ex.*&amp;start=0&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at nucl-ex from 0 to 2000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 25%|██▌       | 2/8 [00:00&lt;00:01,  4.35it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-ex.*&amp;start=2000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at nucl-ex from 2000 to 4000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 38%|███▊      | 3/8 [00:00&lt;00:01,  4.29it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-ex.*&amp;start=4000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at nucl-ex from 4000 to 6000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 50%|█████     | 4/8 [00:00&lt;00:00,  4.37it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-ex.*&amp;start=6000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at nucl-ex from 6000 to 8000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 62%|██████▎   | 5/8 [00:01&lt;00:00,  4.35it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-ex.*&amp;start=8000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at nucl-ex from 8000 to 10000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 75%|███████▌  | 6/8 [00:01&lt;00:00,  4.33it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-ex.*&amp;start=10000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at nucl-ex from 10000 to 12000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 88%|████████▊ | 7/8 [00:01&lt;00:00,  4.32it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-ex.*&amp;start=12000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at nucl-ex from 12000 to 14000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>100%|██████████| 8/8 [00:01&lt;00:00,  4.32it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-ex.*&amp;start=14000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at nucl-ex from 14000 to 16000
-Querying nucl-th</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 12%|█▎        | 1/8 [00:00&lt;00:01,  4.40it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-th.*&amp;start=0&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at nucl-th from 0 to 2000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 25%|██▌       | 2/8 [00:00&lt;00:01,  4.24it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-th.*&amp;start=2000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at nucl-th from 2000 to 4000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 38%|███▊      | 3/8 [00:00&lt;00:01,  4.23it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-th.*&amp;start=4000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at nucl-th from 4000 to 6000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 50%|█████     | 4/8 [00:00&lt;00:00,  4.30it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-th.*&amp;start=6000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at nucl-th from 6000 to 8000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 62%|██████▎   | 5/8 [00:01&lt;00:00,  4.31it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-th.*&amp;start=8000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at nucl-th from 8000 to 10000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 75%|███████▌  | 6/8 [00:01&lt;00:00,  4.33it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-th.*&amp;start=10000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at nucl-th from 10000 to 12000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 88%|████████▊ | 7/8 [00:01&lt;00:00,  4.36it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-th.*&amp;start=12000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at nucl-th from 12000 to 14000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>100%|██████████| 8/8 [00:01&lt;00:00,  4.34it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-th.*&amp;start=14000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at nucl-th from 14000 to 16000
-Querying physics</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 38%|███▊      | 3/8 [00:47&lt;01:05, 13.14s/it]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:physics.*&amp;start=4000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at physics from 4000 to 6000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 88%|████████▊ | 7/8 [02:07&lt;00:15, 15.71s/it]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:physics.*&amp;start=12000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at physics from 12000 to 14000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>100%|██████████| 8/8 [02:34&lt;00:00, 19.31s/it]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Querying quant-ph</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 12%|█▎        | 1/8 [00:00&lt;00:01,  4.02it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:quant-ph.*&amp;start=0&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at quant-ph from 0 to 2000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 25%|██▌       | 2/8 [00:00&lt;00:01,  4.27it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:quant-ph.*&amp;start=2000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at quant-ph from 2000 to 4000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 38%|███▊      | 3/8 [00:00&lt;00:01,  4.33it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:quant-ph.*&amp;start=4000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at quant-ph from 4000 to 6000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 50%|█████     | 4/8 [00:00&lt;00:00,  4.39it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:quant-ph.*&amp;start=6000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at quant-ph from 6000 to 8000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 62%|██████▎   | 5/8 [00:01&lt;00:00,  4.36it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:quant-ph.*&amp;start=8000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at quant-ph from 8000 to 10000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 75%|███████▌  | 6/8 [00:01&lt;00:00,  4.35it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:quant-ph.*&amp;start=10000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at quant-ph from 10000 to 12000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 88%|████████▊ | 7/8 [00:01&lt;00:00,  4.35it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:quant-ph.*&amp;start=12000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at quant-ph from 12000 to 14000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>100%|██████████| 8/8 [00:01&lt;00:00,  4.32it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:quant-ph.*&amp;start=14000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
-Error at quant-ph from 14000 to 16000</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code></code></pre>
-</div>
 </div>
 <div class="cell" data-outputid="8140f719-db80-4b6e-b675-20a55092467a">
-<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a>failed</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>failed</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="28">
 <pre><code>{'gr-qc': [0, 2000, 4000, 6000, 8000, 10000, 12000, 14000],
  'hep-ex': [0, 2000, 4000, 6000, 8000, 10000, 12000, 14000],
@@ -971,20 +586,20 @@ Error at quant-ph from 14000 to 16000</code></pre>
 </div>
 </div>
 <div class="cell" data-outputid="9189f6c8-c997-4d1d-9ba2-8e34fb436707">
-<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a>redos <span class="op">=</span> failed.copy()</span>
-<span id="cb121-2"><a href="#cb121-2" aria-hidden="true" tabindex="-1"></a>failed <span class="op">=</span> {}</span>
-<span id="cb121-3"><a href="#cb121-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb121-4"><a href="#cb121-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cat <span class="kw">in</span> redos:</span>
-<span id="cb121-5"><a href="#cb121-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Querying </span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb121-6"><a href="#cb121-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> tqdm(redos[cat]):</span>
-<span id="cb121-7"><a href="#cb121-7" aria-hidden="true" tabindex="-1"></a>        start <span class="op">=</span> i</span>
-<span id="cb121-8"><a href="#cb121-8" aria-hidden="true" tabindex="-1"></a>        end <span class="op">=</span> i <span class="op">+</span> <span class="dv">2000</span></span>
-<span id="cb121-9"><a href="#cb121-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
-<span id="cb121-10"><a href="#cb121-10" aria-hidden="true" tabindex="-1"></a>            query_range(cat, start, <span class="dv">2000</span>)</span>
-<span id="cb121-11"><a href="#cb121-11" aria-hidden="true" tabindex="-1"></a>            time.sleep(<span class="dv">3</span>)</span>
-<span id="cb121-12"><a href="#cb121-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span>:</span>
-<span id="cb121-13"><a href="#cb121-13" aria-hidden="true" tabindex="-1"></a>            failed.setdefault(cat, []).append(start)</span>
-<span id="cb121-14"><a href="#cb121-14" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Error at </span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss"> from </span><span class="sc">{</span>start<span class="sc">}</span><span class="ss"> to </span><span class="sc">{</span>end<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>redos <span class="op">=</span> failed.copy()</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>failed <span class="op">=</span> {}</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cat <span class="kw">in</span> redos:</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Querying </span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> tqdm(redos[cat]):</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>        start <span class="op">=</span> i</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        end <span class="op">=</span> i <span class="op">+</span> <span class="dv">2000</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>            query_range(cat, start, <span class="dv">2000</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>            time.sleep(<span class="dv">3</span>)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span>:</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>            failed.setdefault(cat, []).append(start)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Error at </span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss"> from </span><span class="sc">{</span>start<span class="sc">}</span><span class="ss"> to </span><span class="sc">{</span>end<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="30">
 <pre><code>{'gr-qc': [0, 2000, 4000, 6000, 8000, 10000, 12000, 14000],
  'hep-ex': [0, 2000, 4000, 6000, 8000, 10000, 12000, 14000],
@@ -996,25 +611,25 @@ Error at quant-ph from 14000 to 16000</code></pre>
 </div>
 <p>Sometimes the number of papers returned by a single call is less than 1600, we check the number of papers returned by each call and save the failed categories and retry them later.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb123"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> glob</span>
-<span id="cb123-2"><a href="#cb123-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
-<span id="cb123-3"><a href="#cb123-3" aria-hidden="true" tabindex="-1"></a>cats_data <span class="op">=</span> glob.glob(<span class="st">"datasets/*"</span>)</span>
-<span id="cb123-4"><a href="#cb123-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb123-5"><a href="#cb123-5" aria-hidden="true" tabindex="-1"></a>all_data <span class="op">=</span> []</span>
-<span id="cb123-6"><a href="#cb123-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cat <span class="kw">in</span> cats_data:</span>
-<span id="cb123-7"><a href="#cb123-7" aria-hidden="true" tabindex="-1"></a>    all_data <span class="op">+=</span> glob.glob(<span class="ss">f"</span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss">/*.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> glob</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>cats_data <span class="op">=</span> glob.glob(<span class="st">"datasets/*"</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>all_data <span class="op">=</span> []</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cat <span class="kw">in</span> cats_data:</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    all_data <span class="op">+=</span> glob.glob(<span class="ss">f"</span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss">/*.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-outputid="455974dc-1ffc-4cb1-9733-ac672aad8545">
-<div class="sourceCode cell-code" id="cb124"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a>incomplete <span class="op">=</span> []</span>
-<span id="cb124-2"><a href="#cb124-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb124-3"><a href="#cb124-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> all_data:</span>
-<span id="cb124-4"><a href="#cb124-4" aria-hidden="true" tabindex="-1"></a>    len_df <span class="op">=</span> <span class="bu">len</span>(pd.read_csv(d))</span>
-<span id="cb124-5"><a href="#cb124-5" aria-hidden="true" tabindex="-1"></a>    match <span class="op">=</span> re.search(<span class="vs">r"datasets/([\w-]+)/\1_(\d+)\.csv$"</span>, d)</span>
-<span id="cb124-6"><a href="#cb124-6" aria-hidden="true" tabindex="-1"></a>    cat <span class="op">=</span> match.group(<span class="dv">1</span>)</span>
-<span id="cb124-7"><a href="#cb124-7" aria-hidden="true" tabindex="-1"></a>    num <span class="op">=</span> <span class="bu">int</span>(match.group(<span class="dv">2</span>))</span>
-<span id="cb124-8"><a href="#cb124-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> len_df <span class="op">&lt;</span> <span class="dv">2000</span> <span class="kw">and</span> num <span class="op">!=</span> <span class="dv">7</span>:</span>
-<span id="cb124-9"><a href="#cb124-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>num<span class="sc">}</span><span class="ss"> has </span><span class="sc">{</span>len_df<span class="sc">}</span><span class="ss"> rows"</span>)</span>
-<span id="cb124-10"><a href="#cb124-10" aria-hidden="true" tabindex="-1"></a>        incomplete.append((cat, num))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>incomplete <span class="op">=</span> []</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> all_data:</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    len_df <span class="op">=</span> <span class="bu">len</span>(pd.read_csv(d))</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    match <span class="op">=</span> re.search(<span class="vs">r"datasets/([\w-]+)/\1_(\d+)\.csv$"</span>, d)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    cat <span class="op">=</span> match.group(<span class="dv">1</span>)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    num <span class="op">=</span> <span class="bu">int</span>(match.group(<span class="dv">2</span>))</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> len_df <span class="op">&lt;</span> <span class="dv">2000</span> <span class="kw">and</span> num <span class="op">!=</span> <span class="dv">7</span>:</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>num<span class="sc">}</span><span class="ss"> has </span><span class="sc">{</span>len_df<span class="sc">}</span><span class="ss"> rows"</span>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        incomplete.append((cat, num))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>econ 3 has 1573 rows</code></pre>
 </div>
@@ -1022,15 +637,15 @@ Error at quant-ph from 14000 to 16000</code></pre>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb126"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cat, num <span class="kw">in</span> incomplete:</span>
-<span id="cb126-2"><a href="#cb126-2" aria-hidden="true" tabindex="-1"></a>    start <span class="op">=</span> num<span class="op">*</span><span class="dv">2000</span></span>
-<span id="cb126-3"><a href="#cb126-3" aria-hidden="true" tabindex="-1"></a>    end <span class="op">=</span> start <span class="op">+</span> <span class="dv">2000</span></span>
-<span id="cb126-4"><a href="#cb126-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb126-5"><a href="#cb126-5" aria-hidden="true" tabindex="-1"></a>        query_range(cat, num<span class="op">*</span><span class="dv">2000</span>, <span class="dv">2000</span>)</span>
-<span id="cb126-6"><a href="#cb126-6" aria-hidden="true" tabindex="-1"></a>        time.sleep(<span class="dv">3</span>)</span>
-<span id="cb126-7"><a href="#cb126-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span>:</span>
-<span id="cb126-8"><a href="#cb126-8" aria-hidden="true" tabindex="-1"></a>        failed2.setdefault(cat, []).append(start)</span>
-<span id="cb126-9"><a href="#cb126-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Error at </span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss"> from </span><span class="sc">{</span>start<span class="sc">}</span><span class="ss"> to </span><span class="sc">{</span>end<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cat, num <span class="kw">in</span> incomplete:</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    start <span class="op">=</span> num<span class="op">*</span><span class="dv">2000</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    end <span class="op">=</span> start <span class="op">+</span> <span class="dv">2000</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>        query_range(cat, num<span class="op">*</span><span class="dv">2000</span>, <span class="dv">2000</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>        time.sleep(<span class="dv">3</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span>:</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>        failed2.setdefault(cat, []).append(start)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Error at </span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss"> from </span><span class="sc">{</span>start<span class="sc">}</span><span class="ss"> to </span><span class="sc">{</span>end<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 

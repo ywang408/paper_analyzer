@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://ywang408.github.io/paper_analyzer/gpt3.5.html</loc>
+    <lastmod>2023-05-05T22:26:06.230Z</lastmod>
+  </url>
+  <url>
     <loc>https://ywang408.github.io/paper_analyzer/visualization.html</loc>
-    <lastmod>2023-05-05T21:18:06.899Z</lastmod>
+    <lastmod>2023-05-05T22:26:06.450Z</lastmod>
   </url>
   <url>
     <loc>https://ywang408.github.io/paper_analyzer/scrape.html</loc>
-    <lastmod>2023-05-05T21:18:07.201Z</lastmod>
+    <lastmod>2023-05-05T22:26:06.697Z</lastmod>
   </url>
   <url>
     <loc>https://ywang408.github.io/paper_analyzer/index.html</loc>
-    <lastmod>2023-05-05T21:18:07.366Z</lastmod>
+    <lastmod>2023-05-05T22:26:06.881Z</lastmod>
   </url>
 </urlset>
