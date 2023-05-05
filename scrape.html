@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.475">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2023-05-04">
+
+<title>Analysis of Arxiv Papers - Scrape data from Arxiv</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Scrape data from Arxiv</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Analysis of Arxiv Papers</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Home</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./scrape.html" class="sidebar-item-text sidebar-link active">Scrape data from Arxiv</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./visualization.html" class="sidebar-item-text sidebar-link">Data Visualization</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#auxiliary-functions-for-extracting-extra-features-from-scraped-data" id="toc-auxiliary-functions-for-extracting-extra-features-from-scraped-data" class="nav-link active" data-scroll-target="#auxiliary-functions-for-extracting-extra-features-from-scraped-data">Auxiliary functions for extracting extra features from scraped data</a></li>
+  <li><a href="#scraper" id="toc-scraper" class="nav-link" data-scroll-target="#scraper">Scraper</a></li>
+  <li><a href="#scraping-data" id="toc-scraping-data" class="nav-link" data-scroll-target="#scraping-data">Scraping data</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Scrape data from Arxiv</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 4, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>In this part we levarage the official API of Arxiv to scrape the data we need. The api is well documented <a href="https://info.arxiv.org/help/api/user-manual.html">here</a>.</p>
+<section id="auxiliary-functions-for-extracting-extra-features-from-scraped-data" class="level2">
+<h2 class="anchored" data-anchor-id="auxiliary-functions-for-extracting-extra-features-from-scraped-data">Auxiliary functions for extracting extra features from scraped data</h2>
+<p>Sometimes the features we need are not directly available from the API. We need to extract them from the raw data. Here are some auxiliary functions for this purpose:</p>
+<ul>
+<li><code>get_num_figures</code>: Get the number of figures in the paper from <code>comment</code> field.</li>
+<li><code>get_num_pages</code>: Get the number of pages in the paper from <code>comment</code> field.</li>
+<li><code>get_num_eqs</code>: For heavy math papers, we can get the number of equations from <code>summary</code> field.</li>
+<li><code>replace_eq</code>: Replace the equation in <code>summary</code> field with a placeholder.</li>
+</ul>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_num_figures(comment: <span class="bu">str</span>):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> comment <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># regex pattern to match "n figures" or "n + m figures", or mixtures of both</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    pattern <span class="op">=</span> <span class="vs">r"\d+\s*\+\s*\d+\s*figures|\d+\s*figures"</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    matches <span class="op">=</span> re.findall(pattern, comment)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(matches) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        num_figures <span class="op">=</span> <span class="bu">sum</span>(<span class="bu">sum</span>(<span class="bu">int</span>(n) <span class="cf">for</span> n <span class="kw">in</span> re.findall(<span class="vs">r"\d+"</span>, match))</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>                        <span class="cf">for</span> match <span class="kw">in</span> matches)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> num_figures</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_num_pages(comment: <span class="bu">str</span>):</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> comment <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># regex pattern to match "n pages" or "n + m pages", no mixtures</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    pattern <span class="op">=</span> <span class="vs">r"\d+\s*\+\s*\d+\s*pages|\d+\s*pages"</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    match <span class="op">=</span> re.search(pattern, comment)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> match:</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>        match <span class="op">=</span> match.group()</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>        num_pages <span class="op">=</span> <span class="bu">sum</span>(<span class="bu">int</span>(n) <span class="cf">for</span> n <span class="kw">in</span> re.findall(<span class="vs">r"\d+"</span>, match))</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> num_pages</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_number_eqs(summary: <span class="bu">str</span>):</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> summary <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    pattern <span class="op">=</span> <span class="vs">r"\${1,2}([\s\S]+?)\${1,2}"</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    matches <span class="op">=</span> re.findall(pattern, summary)</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">len</span>(matches)</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> replace_eq(summary: <span class="bu">str</span>, replacement: <span class="bu">str</span>):</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> summary <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> summary</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    pattern <span class="op">=</span> <span class="vs">r"\${1,2}([\s\S]+?)\${1,2}"</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> re.sub(pattern, replacement, summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="scraper" class="level2">
+<h2 class="anchored" data-anchor-id="scraper">Scraper</h2>
+<p>Compared to the pre-existing package(<a href="http://lukasschwab.me/arxiv.py/index.html">arxiv.arxiv</a>) and official API, we use <code>request</code> instead of <code>urllib</code> to make the code more readable and easier to maintain, and we leverage the <code>beautifulsoup</code> package to parse the xml response.</p>
+<p>Our scraper contains two classes <code>Paper</code> and <code>Search</code>:</p>
+<ul>
+<li><code>Paper</code>: A class for storing the information of a single paper.</li>
+<li><code>Search</code>: A class for sending request to the API and parsing the response, the responses will be stored in a list of <code>Paper</code> objects and return by the <code>results</code> method. We also implement a <code>to_dataframe</code> method to convert the results to a pandas dataframe, which is useful in the later part.</li>
+</ul>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bs4 <span class="im">import</span> BeautifulSoup</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Paper:</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, <span class="op">*</span>args, <span class="op">**</span>kwargs) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.paper_id <span class="op">=</span> kwargs.get(<span class="st">'paper_id'</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.updated <span class="op">=</span> kwargs.get(<span class="st">'updated'</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.published <span class="op">=</span> kwargs.get(<span class="st">'published'</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.title <span class="op">=</span> kwargs.get(<span class="st">'title'</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.authors <span class="op">=</span> kwargs.get(<span class="st">'authors'</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.summary <span class="op">=</span> kwargs.get(<span class="st">'summary'</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.comment <span class="op">=</span> kwargs.get(<span class="st">'comment'</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.link <span class="op">=</span> kwargs.get(<span class="st">'link'</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.doi <span class="op">=</span> kwargs.get(<span class="st">'doi'</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.pdf_link <span class="op">=</span> kwargs.get(<span class="st">'pdf_link'</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.term <span class="op">=</span> kwargs.get(<span class="st">'term'</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.metadata <span class="op">=</span> <span class="va">self</span>.to_dict()</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__repr__</span>(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f'Paper(</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>paper_id<span class="sc">}</span><span class="ss">)'</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> (<span class="ss">f"title: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>title<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>                <span class="ss">f"authors: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>authors<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>                <span class="ss">f"link: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>link<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>                <span class="ss">f"doi: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>doi<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>                <span class="ss">f"pdf_link: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>pdf_link<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>                <span class="ss">f"term: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>term<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> to_dict(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> {</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>            <span class="st">'paper_id'</span>: <span class="va">self</span>.paper_id,</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>            <span class="st">'updated'</span>: <span class="va">self</span>.updated,</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>            <span class="st">'published'</span>: <span class="va">self</span>.published,</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>            <span class="st">'title'</span>: <span class="va">self</span>.title,</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>            <span class="st">'authors'</span>: <span class="va">self</span>.authors,</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>            <span class="st">'summary'</span>: <span class="va">self</span>.summary,</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>            <span class="st">'comment'</span>: <span class="va">self</span>.comment,</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>            <span class="st">'link'</span>: <span class="va">self</span>.link,</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>            <span class="st">'doi'</span>: <span class="va">self</span>.doi,</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>            <span class="st">'pdf_link'</span>: <span class="va">self</span>.pdf_link,</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>            <span class="st">'term'</span>: <span class="va">self</span>.term</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> download_pdf(<span class="va">self</span>, path<span class="op">=</span><span class="st">"./data"</span>):</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>        <span class="co"># </span><span class="al">TODO</span><span class="co">: implement</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Search:</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, query: <span class="bu">str</span> <span class="op">=</span> <span class="va">None</span>, id_list: <span class="bu">list</span> <span class="op">=</span> <span class="va">None</span>, start: <span class="bu">int</span> <span class="op">=</span> <span class="dv">0</span>,</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>                max_results: <span class="bu">int</span> <span class="op">=</span> <span class="dv">2000</span>, sort_by: <span class="bu">str</span> <span class="op">=</span> <span class="st">"relevance"</span>, sort_order: <span class="bu">str</span> <span class="op">=</span> <span class="st">'descending'</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.query <span class="op">=</span> query</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.id_list <span class="op">=</span> id_list</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.start <span class="op">=</span> start</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.max_results <span class="op">=</span> max_results</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.sort_by <span class="op">=</span> sort_by</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.sort_order <span class="op">=</span> sort_order</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.url <span class="op">=</span> <span class="va">self</span>._url()  <span class="co"># query url</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.response <span class="op">=</span> <span class="va">self</span>._check_response()  <span class="co"># response from query</span></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"query at </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>query_date<span class="sc">}</span><span class="ss"> for </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>query<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>id_list<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _url(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>        base_url <span class="op">=</span> <span class="st">"http://export.arxiv.org/api/query?"</span></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.query:</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>            query <span class="op">=</span> <span class="ss">f"search_query=</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>query<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> <span class="va">self</span>.id_list:</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>            query <span class="op">=</span> <span class="ss">f"id_list=</span><span class="sc">{</span><span class="st">','</span><span class="sc">.</span>join(<span class="va">self</span>.id_list)<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"Must provide query or id_list"</span>)</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>        url <span class="op">=</span>  (<span class="ss">f"</span><span class="sc">{</span>base_url<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>                <span class="ss">f"</span><span class="sc">{</span>query<span class="sc">}</span><span class="ss">&amp;start=</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>start<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>                <span class="ss">f"&amp;max_results=</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>max_results<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>                <span class="ss">f"&amp;sortBy=</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>sort_by<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>                <span class="ss">f"&amp;sortOrder=</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>sort_order<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> url</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _check_response(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>        url <span class="op">=</span> <span class="va">self</span>._url()</span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>        response <span class="op">=</span> requests.get(url)</span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>        soup <span class="op">=</span> BeautifulSoup(response.text, <span class="st">'xml'</span>)</span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> soup.find(<span class="st">"entry"</span>) <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"No results found for </span><span class="sc">{</span>url<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> soup.find(<span class="st">"entry"</span>).find(<span class="st">"title"</span>, recursive<span class="op">=</span><span class="va">False</span>).text <span class="op">==</span> <span class="st">"Error"</span>:</span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(url)</span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"Invalid query or id_list"</span>)</span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> soup</span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _parse_xml(<span class="va">self</span>, xml):</span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a>        paper_id <span class="op">=</span> xml.find(<span class="st">'id'</span>).text</span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a>        updated <span class="op">=</span> xml.find(<span class="st">'updated'</span>).text</span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a>        published <span class="op">=</span> xml.find(<span class="st">'published'</span>).text</span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a>        title <span class="op">=</span> xml.find(<span class="st">'title'</span>).text</span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a>        authors <span class="op">=</span> [author.find(</span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a>            <span class="st">'name'</span>).text <span class="cf">for</span> author <span class="kw">in</span> xml.find_all(<span class="st">'author'</span>)]</span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a>        summary <span class="op">=</span> xml.find(<span class="st">'summary'</span>).text</span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a>        comment <span class="op">=</span> xml.find(<span class="st">'arxiv:comment'</span>).text <span class="cf">if</span> xml.find(</span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a>            <span class="st">'arxiv:comment'</span>) <span class="cf">else</span> <span class="va">None</span></span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a>        link <span class="op">=</span> xml.find(<span class="st">"link"</span>, attrs<span class="op">=</span>{<span class="st">"rel"</span>: <span class="st">"alternate"</span>})[<span class="st">'href'</span>]</span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a>        pdf_link <span class="op">=</span> xml.find(<span class="st">"link"</span>, attrs<span class="op">=</span>{<span class="st">"title"</span>: <span class="st">"pdf"</span>})[<span class="st">'href'</span>]</span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a>        doi <span class="op">=</span> xml.find(<span class="st">"arxiv:doi"</span>).text <span class="cf">if</span> xml.find(<span class="st">"arxiv:doi"</span>) <span class="cf">else</span> <span class="va">None</span></span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a>        term <span class="op">=</span> xml.find(<span class="st">'arxiv:primary_category'</span>)[<span class="st">'term'</span>]</span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> Paper(paper_id<span class="op">=</span>paper_id, updated<span class="op">=</span>updated, published<span class="op">=</span>published, title<span class="op">=</span>title, authors<span class="op">=</span>authors,</span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a>                    summary<span class="op">=</span>summary, comment<span class="op">=</span>comment, link<span class="op">=</span>link, doi<span class="op">=</span>doi, pdf_link<span class="op">=</span>pdf_link, term<span class="op">=</span>term)</span>
+<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> results(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">list</span>:</span>
+<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a>        soup <span class="op">=</span> <span class="va">self</span>.response</span>
+<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a>        entries <span class="op">=</span> soup.find_all(<span class="st">'entry'</span>)</span>
+<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a>        papers <span class="op">=</span> []</span>
+<span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> entry <span class="kw">in</span> entries:</span>
+<span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a>            paper <span class="op">=</span> <span class="va">self</span>._parse_xml(entry)</span>
+<span id="cb2-118"><a href="#cb2-118" aria-hidden="true" tabindex="-1"></a>            papers.append(paper)</span>
+<span id="cb2-119"><a href="#cb2-119" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> papers</span>
+<span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-121"><a href="#cb2-121" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> to_dataframe(<span class="va">self</span>) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb2-122"><a href="#cb2-122" aria-hidden="true" tabindex="-1"></a>        papers <span class="op">=</span> <span class="va">self</span>.results()</span>
+<span id="cb2-123"><a href="#cb2-123" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> pd.DataFrame([paper.to_dict() <span class="cf">for</span> paper <span class="kw">in</span> papers])</span>
+<span id="cb2-124"><a href="#cb2-124" aria-hidden="true" tabindex="-1"></a>        df[<span class="st">'num_figures'</span>] <span class="op">=</span> df[<span class="st">'comment'</span>].<span class="bu">apply</span>(get_num_figures)</span>
+<span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a>        df[<span class="st">'num_pages'</span>] <span class="op">=</span> df[<span class="st">'comment'</span>].<span class="bu">apply</span>(get_num_pages)</span>
+<span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a>        df[<span class="st">'num_eqs'</span>] <span class="op">=</span> df[<span class="st">'summary'</span>].<span class="bu">apply</span>(get_number_eqs)</span>
+<span id="cb2-127"><a href="#cb2-127" aria-hidden="true" tabindex="-1"></a>        df[<span class="st">'main_category'</span>] <span class="op">=</span> df[<span class="st">'term'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: x.split(<span class="st">'.'</span>)[<span class="dv">0</span>])</span>
+<span id="cb2-128"><a href="#cb2-128" aria-hidden="true" tabindex="-1"></a>        df[<span class="st">'updated'</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">'updated'</span>])</span>
+<span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a>        df[<span class="st">'published'</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">'published'</span>])</span>
+<span id="cb2-130"><a href="#cb2-130" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>A typical workflow of using the scraper is as follows:</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2023-05-01T16:28:53.290021844Z&quot;,&quot;start_time&quot;:&quot;2023-05-01T16:28:52.422048264Z&quot;}" data-outputid="27aef5e8-5748-46ef-9d42-185e86e614c3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>search <span class="op">=</span> Search(query<span class="op">=</span><span class="st">"cat:q-fin.*"</span>, start<span class="op">=</span><span class="dv">0</span>, max_results<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                sort_by<span class="op">=</span><span class="st">"submittedDate"</span>, sort_order<span class="op">=</span><span class="st">"descending"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> search.to_dataframe()</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(df))</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>df.sample(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>10</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>paper_id</th>
+      <th>updated</th>
+      <th>published</th>
+      <th>title</th>
+      <th>authors</th>
+      <th>summary</th>
+      <th>comment</th>
+      <th>link</th>
+      <th>doi</th>
+      <th>pdf_link</th>
+      <th>term</th>
+      <th>num_figures</th>
+      <th>num_pages</th>
+      <th>num_eqs</th>
+      <th>main_category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>5</th>
+      <td>http://arxiv.org/abs/2305.00541v1</td>
+      <td>2023-04-30 17:55:16+00:00</td>
+      <td>2023-04-30 17:55:16+00:00</td>
+      <td>A Stationary Mean-Field Equilibrium Model of I...</td>
+      <td>[René Aid, Matteo Basei, Giorgio Ferrari]</td>
+      <td>We consider a mean-field model of firms comp...</td>
+      <td>32 pages; 4 figures</td>
+      <td>http://arxiv.org/abs/2305.00541v1</td>
+      <td>None</td>
+      <td>http://arxiv.org/pdf/2305.00541v1</td>
+      <td>math.OC</td>
+      <td>4</td>
+      <td>32</td>
+      <td>0</td>
+      <td>math</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>http://arxiv.org/abs/2305.00545v1</td>
+      <td>2023-04-30 18:11:34+00:00</td>
+      <td>2023-04-30 18:11:34+00:00</td>
+      <td>Optimal multi-action treatment allocation: A t...</td>
+      <td>[Achim Ahrens, Alessandra Stampi-Bombelli, Sel...</td>
+      <td>The challenge of assigning optimal treatment...</td>
+      <td>None</td>
+      <td>http://arxiv.org/abs/2305.00545v1</td>
+      <td>None</td>
+      <td>http://arxiv.org/pdf/2305.00545v1</td>
+      <td>econ.GN</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>econ</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>http://arxiv.org/abs/2305.00200v1</td>
+      <td>2023-04-29 08:54:20+00:00</td>
+      <td>2023-04-29 08:54:20+00:00</td>
+      <td>Calibration of Local Volatility Models with St...</td>
+      <td>[Gregoire Loeper, Jan Obloj, Benjamin Joseph]</td>
+      <td>We develop a non-parametric, optimal transpo...</td>
+      <td>None</td>
+      <td>http://arxiv.org/abs/2305.00200v1</td>
+      <td>None</td>
+      <td>http://arxiv.org/pdf/2305.00200v1</td>
+      <td>q-fin.MF</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>q-fin</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="scraping-data" class="level2">
+<h2 class="anchored" data-anchor-id="scraping-data">Scraping data</h2>
+<p>In this part, we scrape 16000 papers from all the categories of Arxiv. And to reuse the code, we create two json files <code>main_cats.json</code> and <code>physics_cats.json</code> to store the categories.(Physics has too many subcategories, so we split all the categories into two parts.)</p>
+<div class="cell" data-outputid="2d62a5d9-1fd4-4158-abbc-5d3130ab4700">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"data/main_cats.json"</span>) <span class="im">as</span> f:</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    main_cats <span class="op">=</span> json.load(f)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'data/physics_cats.json'</span>) <span class="im">as</span> f:</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    physics_cats <span class="op">=</span> json.load(f)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>all_cats <span class="op">=</span> <span class="bu">list</span>(main_cats.keys()) <span class="op">+</span> <span class="bu">list</span>(physics_cats.keys())</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(all_cats)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['cs', 'econ', 'eess', 'math', 'q-bio', 'q-fin', 'stat', 'astro-ph', 'cond-mat', 'gr-qc', 'hep-ex', 'math-ph', 'nlin', 'nucl-ex', 'nucl-th', 'physics', 'quant-ph']</code></pre>
+</div>
+</div>
+<p>As documented in arxiv API,</p>
+<blockquote class="blockquote">
+<p>the maximum number of a single call is limited to 30000 in slices of 2000 at time, using the <code>start</code> and <code>max_results</code> parameters. A request for 30000 results will typically take a little over 2 minutes to return a response of over 15MB. Requests for fewer results are much faster and correspondingly smaller.</p>
+</blockquote>
+<p>So we set <code>max_results</code> to 2000 and scrape 8 times for each category such that the total number of papers for each category is 16000.</p>
+<p>Sometimes the API returns error or empty response, for such cases we will save the failed categoreis and retry them later.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tqdm <span class="im">import</span> tqdm</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> query_range(cat, start, max_results):</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    search <span class="op">=</span> Search(query<span class="op">=</span><span class="ss">f"cat:</span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss">.*"</span>, start<span class="op">=</span>start, max_results<span class="op">=</span>max_results,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                    sort_by<span class="op">=</span><span class="st">'lastUpdatedDate'</span>, sort_order<span class="op">=</span><span class="st">'descending'</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    temp_df <span class="op">=</span> search.to_dataframe()</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> os.path.exists(<span class="ss">f"datasets/</span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss">"</span>):</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        os.mkdir(<span class="ss">f"datasets/</span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    temp_df.to_csv(<span class="ss">f"datasets/</span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span><span class="bu">int</span>(start<span class="op">/</span><span class="dv">2000</span>)<span class="sc">}</span><span class="ss">.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="a9ae8674-553c-4641-d16b-d662dbb2e6c9">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>failed <span class="op">=</span> {}</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cat <span class="kw">in</span> physics_cats:</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Querying </span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> tqdm(<span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">16000</span>, <span class="dv">2000</span>)):</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        start <span class="op">=</span> i</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        end <span class="op">=</span> i <span class="op">+</span> <span class="dv">2000</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>            query_range(cat, start, <span class="dv">2000</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>            time.sleep(<span class="dv">3</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span>:</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>            failed.setdefault(cat, []).append(start)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Error at </span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss"> from </span><span class="sc">{</span>start<span class="sc">}</span><span class="ss"> to </span><span class="sc">{</span>end<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Querying astro-ph</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>100%|██████████| 8/8 [03:49&lt;00:00, 28.69s/it]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Querying cond-mat</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>100%|██████████| 8/8 [03:37&lt;00:00, 27.21s/it]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Querying gr-qc</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 12%|█▎        | 1/8 [00:00&lt;00:01,  4.02it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:gr-qc.*&amp;start=0&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at gr-qc from 0 to 2000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 25%|██▌       | 2/8 [00:00&lt;00:01,  4.19it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:gr-qc.*&amp;start=2000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at gr-qc from 2000 to 4000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 38%|███▊      | 3/8 [00:00&lt;00:01,  3.76it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:gr-qc.*&amp;start=4000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at gr-qc from 4000 to 6000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 50%|█████     | 4/8 [00:01&lt;00:01,  3.95it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:gr-qc.*&amp;start=6000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at gr-qc from 6000 to 8000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 62%|██████▎   | 5/8 [00:01&lt;00:00,  4.09it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:gr-qc.*&amp;start=8000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at gr-qc from 8000 to 10000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 75%|███████▌  | 6/8 [00:01&lt;00:00,  4.18it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:gr-qc.*&amp;start=10000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at gr-qc from 10000 to 12000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 88%|████████▊ | 7/8 [00:01&lt;00:00,  4.17it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:gr-qc.*&amp;start=12000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at gr-qc from 12000 to 14000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>100%|██████████| 8/8 [00:01&lt;00:00,  4.11it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:gr-qc.*&amp;start=14000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at gr-qc from 14000 to 16000
+Querying hep-ex</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 12%|█▎        | 1/8 [00:00&lt;00:01,  4.16it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:hep-ex.*&amp;start=0&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at hep-ex from 0 to 2000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 25%|██▌       | 2/8 [00:00&lt;00:01,  4.25it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:hep-ex.*&amp;start=2000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at hep-ex from 2000 to 4000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 38%|███▊      | 3/8 [00:00&lt;00:01,  4.33it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:hep-ex.*&amp;start=4000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at hep-ex from 4000 to 6000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 50%|█████     | 4/8 [00:00&lt;00:00,  4.39it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:hep-ex.*&amp;start=6000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at hep-ex from 6000 to 8000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 62%|██████▎   | 5/8 [00:01&lt;00:00,  4.39it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:hep-ex.*&amp;start=8000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at hep-ex from 8000 to 10000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 75%|███████▌  | 6/8 [00:01&lt;00:00,  4.38it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:hep-ex.*&amp;start=10000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at hep-ex from 10000 to 12000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 88%|████████▊ | 7/8 [00:01&lt;00:00,  4.37it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:hep-ex.*&amp;start=12000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at hep-ex from 12000 to 14000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>100%|██████████| 8/8 [00:01&lt;00:00,  4.36it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:hep-ex.*&amp;start=14000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at hep-ex from 14000 to 16000
+Querying math-ph</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 12%|█▎        | 1/8 [00:00&lt;00:01,  4.46it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:math-ph.*&amp;start=0&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at math-ph from 0 to 2000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 25%|██▌       | 2/8 [00:00&lt;00:01,  4.46it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:math-ph.*&amp;start=2000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at math-ph from 2000 to 4000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 38%|███▊      | 3/8 [00:00&lt;00:01,  4.36it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:math-ph.*&amp;start=4000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at math-ph from 4000 to 6000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 50%|█████     | 4/8 [00:00&lt;00:00,  4.34it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:math-ph.*&amp;start=6000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at math-ph from 6000 to 8000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 62%|██████▎   | 5/8 [00:01&lt;00:00,  4.37it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:math-ph.*&amp;start=8000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at math-ph from 8000 to 10000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 75%|███████▌  | 6/8 [00:01&lt;00:00,  4.40it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:math-ph.*&amp;start=10000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at math-ph from 10000 to 12000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 88%|████████▊ | 7/8 [00:01&lt;00:00,  4.36it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:math-ph.*&amp;start=12000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at math-ph from 12000 to 14000
+No results found for http://export.arxiv.org/api/query?search_query=cat:math-ph.*&amp;start=14000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at math-ph from 14000 to 16000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>100%|██████████| 8/8 [00:01&lt;00:00,  4.40it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Querying nlin</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>100%|██████████| 8/8 [04:21&lt;00:00, 32.63s/it]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Querying nucl-ex</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 12%|█▎        | 1/8 [00:00&lt;00:01,  4.33it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-ex.*&amp;start=0&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at nucl-ex from 0 to 2000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 25%|██▌       | 2/8 [00:00&lt;00:01,  4.35it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-ex.*&amp;start=2000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at nucl-ex from 2000 to 4000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 38%|███▊      | 3/8 [00:00&lt;00:01,  4.29it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-ex.*&amp;start=4000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at nucl-ex from 4000 to 6000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 50%|█████     | 4/8 [00:00&lt;00:00,  4.37it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-ex.*&amp;start=6000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at nucl-ex from 6000 to 8000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 62%|██████▎   | 5/8 [00:01&lt;00:00,  4.35it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-ex.*&amp;start=8000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at nucl-ex from 8000 to 10000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 75%|███████▌  | 6/8 [00:01&lt;00:00,  4.33it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-ex.*&amp;start=10000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at nucl-ex from 10000 to 12000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 88%|████████▊ | 7/8 [00:01&lt;00:00,  4.32it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-ex.*&amp;start=12000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at nucl-ex from 12000 to 14000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>100%|██████████| 8/8 [00:01&lt;00:00,  4.32it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-ex.*&amp;start=14000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at nucl-ex from 14000 to 16000
+Querying nucl-th</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 12%|█▎        | 1/8 [00:00&lt;00:01,  4.40it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-th.*&amp;start=0&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at nucl-th from 0 to 2000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 25%|██▌       | 2/8 [00:00&lt;00:01,  4.24it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-th.*&amp;start=2000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at nucl-th from 2000 to 4000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 38%|███▊      | 3/8 [00:00&lt;00:01,  4.23it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-th.*&amp;start=4000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at nucl-th from 4000 to 6000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 50%|█████     | 4/8 [00:00&lt;00:00,  4.30it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-th.*&amp;start=6000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at nucl-th from 6000 to 8000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 62%|██████▎   | 5/8 [00:01&lt;00:00,  4.31it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-th.*&amp;start=8000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at nucl-th from 8000 to 10000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 75%|███████▌  | 6/8 [00:01&lt;00:00,  4.33it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-th.*&amp;start=10000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at nucl-th from 10000 to 12000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 88%|████████▊ | 7/8 [00:01&lt;00:00,  4.36it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-th.*&amp;start=12000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at nucl-th from 12000 to 14000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>100%|██████████| 8/8 [00:01&lt;00:00,  4.34it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:nucl-th.*&amp;start=14000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at nucl-th from 14000 to 16000
+Querying physics</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 38%|███▊      | 3/8 [00:47&lt;01:05, 13.14s/it]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:physics.*&amp;start=4000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at physics from 4000 to 6000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 88%|████████▊ | 7/8 [02:07&lt;00:15, 15.71s/it]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:physics.*&amp;start=12000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at physics from 12000 to 14000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>100%|██████████| 8/8 [02:34&lt;00:00, 19.31s/it]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Querying quant-ph</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 12%|█▎        | 1/8 [00:00&lt;00:01,  4.02it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:quant-ph.*&amp;start=0&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at quant-ph from 0 to 2000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 25%|██▌       | 2/8 [00:00&lt;00:01,  4.27it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:quant-ph.*&amp;start=2000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at quant-ph from 2000 to 4000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 38%|███▊      | 3/8 [00:00&lt;00:01,  4.33it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:quant-ph.*&amp;start=4000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at quant-ph from 4000 to 6000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 50%|█████     | 4/8 [00:00&lt;00:00,  4.39it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:quant-ph.*&amp;start=6000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at quant-ph from 6000 to 8000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 62%|██████▎   | 5/8 [00:01&lt;00:00,  4.36it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:quant-ph.*&amp;start=8000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at quant-ph from 8000 to 10000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 75%|███████▌  | 6/8 [00:01&lt;00:00,  4.35it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:quant-ph.*&amp;start=10000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at quant-ph from 10000 to 12000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 88%|████████▊ | 7/8 [00:01&lt;00:00,  4.35it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:quant-ph.*&amp;start=12000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at quant-ph from 12000 to 14000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>100%|██████████| 8/8 [00:01&lt;00:00,  4.32it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No results found for http://export.arxiv.org/api/query?search_query=cat:quant-ph.*&amp;start=14000&amp;max_results=2000&amp;sortBy=lastUpdatedDate&amp;sortOrder=descending
+Error at quant-ph from 14000 to 16000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+</div>
+<div class="cell" data-outputid="8140f719-db80-4b6e-b675-20a55092467a">
+<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a>failed</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="28">
+<pre><code>{'gr-qc': [0, 2000, 4000, 6000, 8000, 10000, 12000, 14000],
+ 'hep-ex': [0, 2000, 4000, 6000, 8000, 10000, 12000, 14000],
+ 'math-ph': [0, 2000, 4000, 6000, 8000, 10000, 12000, 14000],
+ 'nucl-ex': [0, 2000, 4000, 6000, 8000, 10000, 12000, 14000],
+ 'nucl-th': [0, 2000, 4000, 6000, 8000, 10000, 12000, 14000],
+ 'physics': [4000, 12000],
+ 'quant-ph': [0, 2000, 4000, 6000, 8000, 10000, 12000, 14000]}</code></pre>
+</div>
+</div>
+<div class="cell" data-outputid="9189f6c8-c997-4d1d-9ba2-8e34fb436707">
+<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a>redos <span class="op">=</span> failed.copy()</span>
+<span id="cb121-2"><a href="#cb121-2" aria-hidden="true" tabindex="-1"></a>failed <span class="op">=</span> {}</span>
+<span id="cb121-3"><a href="#cb121-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb121-4"><a href="#cb121-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cat <span class="kw">in</span> redos:</span>
+<span id="cb121-5"><a href="#cb121-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Querying </span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb121-6"><a href="#cb121-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> tqdm(redos[cat]):</span>
+<span id="cb121-7"><a href="#cb121-7" aria-hidden="true" tabindex="-1"></a>        start <span class="op">=</span> i</span>
+<span id="cb121-8"><a href="#cb121-8" aria-hidden="true" tabindex="-1"></a>        end <span class="op">=</span> i <span class="op">+</span> <span class="dv">2000</span></span>
+<span id="cb121-9"><a href="#cb121-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb121-10"><a href="#cb121-10" aria-hidden="true" tabindex="-1"></a>            query_range(cat, start, <span class="dv">2000</span>)</span>
+<span id="cb121-11"><a href="#cb121-11" aria-hidden="true" tabindex="-1"></a>            time.sleep(<span class="dv">3</span>)</span>
+<span id="cb121-12"><a href="#cb121-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span>:</span>
+<span id="cb121-13"><a href="#cb121-13" aria-hidden="true" tabindex="-1"></a>            failed.setdefault(cat, []).append(start)</span>
+<span id="cb121-14"><a href="#cb121-14" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Error at </span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss"> from </span><span class="sc">{</span>start<span class="sc">}</span><span class="ss"> to </span><span class="sc">{</span>end<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="30">
+<pre><code>{'gr-qc': [0, 2000, 4000, 6000, 8000, 10000, 12000, 14000],
+ 'hep-ex': [0, 2000, 4000, 6000, 8000, 10000, 12000, 14000],
+ 'math-ph': [0, 2000, 4000, 6000, 8000, 10000, 12000, 14000],
+ 'nucl-ex': [0, 2000, 4000, 6000, 8000, 10000, 12000, 14000],
+ 'nucl-th': [0, 2000, 4000, 6000, 8000, 10000, 12000, 14000],
+ 'quant-ph': [0, 2000, 4000, 6000, 8000, 10000, 12000, 14000]}</code></pre>
+</div>
+</div>
+<p>Sometimes the number of papers returned by a single call is less than 1600, we check the number of papers returned by each call and save the failed categories and retry them later.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb123"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> glob</span>
+<span id="cb123-2"><a href="#cb123-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb123-3"><a href="#cb123-3" aria-hidden="true" tabindex="-1"></a>cats_data <span class="op">=</span> glob.glob(<span class="st">"datasets/*"</span>)</span>
+<span id="cb123-4"><a href="#cb123-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb123-5"><a href="#cb123-5" aria-hidden="true" tabindex="-1"></a>all_data <span class="op">=</span> []</span>
+<span id="cb123-6"><a href="#cb123-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cat <span class="kw">in</span> cats_data:</span>
+<span id="cb123-7"><a href="#cb123-7" aria-hidden="true" tabindex="-1"></a>    all_data <span class="op">+=</span> glob.glob(<span class="ss">f"</span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss">/*.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="455974dc-1ffc-4cb1-9733-ac672aad8545">
+<div class="sourceCode cell-code" id="cb124"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a>incomplete <span class="op">=</span> []</span>
+<span id="cb124-2"><a href="#cb124-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb124-3"><a href="#cb124-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> all_data:</span>
+<span id="cb124-4"><a href="#cb124-4" aria-hidden="true" tabindex="-1"></a>    len_df <span class="op">=</span> <span class="bu">len</span>(pd.read_csv(d))</span>
+<span id="cb124-5"><a href="#cb124-5" aria-hidden="true" tabindex="-1"></a>    match <span class="op">=</span> re.search(<span class="vs">r"datasets/([\w-]+)/\1_(\d+)\.csv$"</span>, d)</span>
+<span id="cb124-6"><a href="#cb124-6" aria-hidden="true" tabindex="-1"></a>    cat <span class="op">=</span> match.group(<span class="dv">1</span>)</span>
+<span id="cb124-7"><a href="#cb124-7" aria-hidden="true" tabindex="-1"></a>    num <span class="op">=</span> <span class="bu">int</span>(match.group(<span class="dv">2</span>))</span>
+<span id="cb124-8"><a href="#cb124-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> len_df <span class="op">&lt;</span> <span class="dv">2000</span> <span class="kw">and</span> num <span class="op">!=</span> <span class="dv">7</span>:</span>
+<span id="cb124-9"><a href="#cb124-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>num<span class="sc">}</span><span class="ss"> has </span><span class="sc">{</span>len_df<span class="sc">}</span><span class="ss"> rows"</span>)</span>
+<span id="cb124-10"><a href="#cb124-10" aria-hidden="true" tabindex="-1"></a>        incomplete.append((cat, num))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>econ 3 has 1573 rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb126"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cat, num <span class="kw">in</span> incomplete:</span>
+<span id="cb126-2"><a href="#cb126-2" aria-hidden="true" tabindex="-1"></a>    start <span class="op">=</span> num<span class="op">*</span><span class="dv">2000</span></span>
+<span id="cb126-3"><a href="#cb126-3" aria-hidden="true" tabindex="-1"></a>    end <span class="op">=</span> start <span class="op">+</span> <span class="dv">2000</span></span>
+<span id="cb126-4"><a href="#cb126-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb126-5"><a href="#cb126-5" aria-hidden="true" tabindex="-1"></a>        query_range(cat, num<span class="op">*</span><span class="dv">2000</span>, <span class="dv">2000</span>)</span>
+<span id="cb126-6"><a href="#cb126-6" aria-hidden="true" tabindex="-1"></a>        time.sleep(<span class="dv">3</span>)</span>
+<span id="cb126-7"><a href="#cb126-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span>:</span>
+<span id="cb126-8"><a href="#cb126-8" aria-hidden="true" tabindex="-1"></a>        failed2.setdefault(cat, []).append(start)</span>
+<span id="cb126-9"><a href="#cb126-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Error at </span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss"> from </span><span class="sc">{</span>start<span class="sc">}</span><span class="ss"> to </span><span class="sc">{</span>end<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
