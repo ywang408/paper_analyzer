@@ -1,0 +1,51 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  },
+  {
+    "objectID": "visualization.html",
+    "href": "visualization.html",
+    "title": "Data Visualization",
+    "section": "",
+    "text": "Pacakges used in this notebook:"
+  },
+  {
+    "objectID": "visualization.html#merge-datasets",
+    "href": "visualization.html#merge-datasets",
+    "title": "Data Visualization",
+    "section": "Merge datasets",
+    "text": "Merge datasets\nConcatenate all the dataframes from different subjects into one dataframe.\n\nif not os.path.exists('data.csv'):\n    df = pd.DataFrame()\n    for path in glob.glob(\"./datasets/*\"):\n        cat_csv = glob.glob(f\"{path}/*.csv\")\n        for csv in cat_csv:\n            df = pd.concat([df, pd.read_csv(csv)], axis=0)\n    df.to_csv(f\"./data.csv\", index=False)\n\nelse:\n    df = pd.read_csv(\"./data.csv\")"
+  },
+  {
+    "objectID": "visualization.html#data-cleaning",
+    "href": "visualization.html#data-cleaning",
+    "title": "Data Visualization",
+    "section": "Data cleaning",
+    "text": "Data cleaning\nGenerally the data returned by arxiv api is pretty clean, we only need to perform some basic cleaning on merged dataset:\n\nDrop columns if no title and summary\nDrop duplicates if title and summary are the same\nSort by date again\n\nFurther cleaning will be done in the specific tasks.\n\ndf = df.dropna(subset=['title', 'authors'])\ndf = df.sort_values(by='updated', ascending=False)\ndf = df.drop_duplicates(subset=['title', 'authors'])\nlen(df)\n\n146021\n\n\n\nExtract papers with doi for BIA660 analysis\n\ndoi_papers = df[df['doi'].notnull()]\ndoi_papers.to_csv(\"./doi_papers.csv\", index=False)\ndoi_papers['main_category'].value_counts()\n\nmain_category\nastro-ph    8470\ncond-mat    6128\nphysics     5665\nnlin        4184\nq-bio       3110\ncs          2778\nq-fin       2395\nmath        1812\neess        1323\nquant-ph    1065\nstat         850\nmath-ph      819\necon         690\nhep-th       668\ngr-qc        630\nhep-ph       395\nnucl-th      104\nhep-ex        63\nhep-lat       28\nnucl-ex       23\nchao-dyn       1\nName: count, dtype: int64\n\n\n\n\nUse q-fin data for analysis inside one subject\n\nfin_papers = df[df['main_category'] == 'q-fin']\nfin_papers.to_csv(\"./fin_papers.csv\", index=False)\n\nfin_papers['term'].value_counts()\n\nterm\nq-fin.ST    1738\nq-fin.GN    1424\nq-fin.MF    1316\nq-fin.PR    1137\nq-fin.RM    1104\nq-fin.CP    1027\nq-fin.PM     983\nq-fin.TR     920\nq-fin.EC     383\nName: count, dtype: int64"
+  },
+  {
+    "objectID": "visualization.html#data-visualization",
+    "href": "visualization.html#data-visualization",
+    "title": "Data Visualization",
+    "section": "Data visualization",
+    "text": "Data visualization\n\nCategories distribution\n\n\nCode\ndef filter(data, pct: float):\n    \"\"\"make entries with less than pct of total sum as others\"\"\"\n    n = data.sum()\n    data['others'] = data[data < n * pct].sum()\n    data = data[data >= n * pct]\n    return data.sort_values(ascending=False).to_dict()\n\n\n\n\nCode\nall_counts = df['main_category'].value_counts()\nall_counts = filter(all_counts, 0.02)\n\nsns.set_style(\"dark\")\nsns.set_palette('pastel')\nplt.pie(all_counts.values(), labels=all_counts.keys(),\n        autopct='%1.1f%%', labeldistance=1.05, pctdistance=0.75,)\nplt.title('Main Category Distribution')\nplt.show()\n\n\n\n\n\nOur whole dataset is balanced, next look at the distribution of each subject in the dataset.\n\n\nCode\nall_cats = all_counts.keys()\nall_cats = set(all_cats) - set(['others'])\n\n\nfig, axs = plt.subplots(4, 3, figsize=(20, 15))\nfor i, cat in enumerate(all_cats):\n    row = i // 3\n    col = i % 3\n    cat_df = df.query(f\"main_category == '{cat}'\")\n    cat_count = filter(cat_df['term'].value_counts(), 0.02)\n    axs[row, col].pie(cat_count.values(), labels=cat_count.keys(),\n                      autopct='%1.1f%%', labeldistance=1.05, pctdistance=0.75,)\n    axs[row, col].set_title(f\"{cat} Distribution\")\nplt.show()\n\n\n\n\n\n\n\nPublication percentage\n\n\nCode\npublished = {}\n\nif all_counts.get('others'):\n    all_counts.pop('others')\n\nfor cat in all_counts:\n    cat_df = df.query(f\"main_category == '{cat}'\")\n    cat_published = cat_df['doi'].count()\n    published[cat] = cat_published\ncategories = list(published.keys())\npaper_num = list(all_counts.values())\npublished_num = list(published.values())\npct_published = [p / n for p, n in zip(published_num, paper_num)]\n\nsns.set_style('darkgrid')  # Set the plot style\ncolors = sns.color_palette(\"Paired\")\nplt.figure(figsize=(12, 8))\nplt.title('Published Papers vs All Papers')\nax = sns.barplot(x=categories, y=paper_num, alpha=0.9,\n                 color=colors[0], errorbar=\"sd\", width=0.5,\n                 label='Num of Papers')\nsns.barplot(x=categories, y=published_num,\n            alpha=0.8, color=colors[1], errorbar=\"sd\", width=0.5,\n            label='Num of Published Papers')\nfor container in ax.containers:\n    ax.bar_label(container, fmt='%.0f', label_type='edge')\n\nplt.legend()\nplt.show()\n\n\n\n\n\n\n\nWho likes to publish on arxiv?\nPaper submitted/updated from March 2023 to April 2023\n\n\nCode\ncolors = sns.color_palette(\"Set2\")\ncut_off = '2023-3-15'\nsub_df = df.query(\"main_category in @categories\")\nsub_df = df[df['updated'] > cut_off]\ngrouped = sub_df.groupby([pd.Grouper(key='updated', freq='D'),\n                      'main_category']).count()\n\npivot = grouped['paper_id'].unstack().fillna(0)\npivot = pivot.cumsum()\n\n# drop categories with less than 500 papers\nnum_papers = pivot.iloc[-1]\ncols = num_papers[num_papers > 500].index\npivot = pivot[cols]\n\nax = pivot.plot(figsize=(10, 6))\nax.set_title('Number of paper updated over time')\nax.set_xlabel('Update Date')\nplt.show()"
+  },
+  {
+    "objectID": "visualization.html#goal",
+    "href": "visualization.html#goal",
+    "title": "Data Visualization",
+    "section": "Goal",
+    "text": "Goal\n\nAutomatically classify papers into different subjects\nExtract keywords(methods, datasets, etc.) from papers\nFind out is there any feature that can help us to determine whether a paper can be published"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Main page",
+    "section": "",
+    "text": "This is the main page for BIA 660/667 project.\n\n\n\n\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Title\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\nDate\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\nMay 4, 2023\n\n\nData Visualization\n\n\n\n\n\n\n\n\nNo matching items"
+  }
+]
