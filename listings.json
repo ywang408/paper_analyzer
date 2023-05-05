@@ -2,7 +2,8 @@
   {
     "listing": "/index.html",
     "items": [
-      "/visualization.html"
+      "/visualization.html",
+      "/scrape.html"
     ]
   }
 ]
