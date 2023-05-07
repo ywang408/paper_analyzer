@@ -2,30 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://ywang408.github.io/paper_analyzer/ada.html</loc>
-    <lastmod>2023-05-07T00:01:45.285Z</lastmod>
+    <lastmod>2023-05-07T00:47:44.956Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ywang408.github.io/paper_analyzer/dl.html</loc>
+    <lastmod>2023-05-07T00:47:45.379Z</lastmod>
   </url>
   <url>
     <loc>https://ywang408.github.io/paper_analyzer/gpt3.5.html</loc>
-    <lastmod>2023-05-07T00:01:45.458Z</lastmod>
+    <lastmod>2023-05-07T00:47:45.559Z</lastmod>
   </url>
   <url>
     <loc>https://ywang408.github.io/paper_analyzer/index.html</loc>
-    <lastmod>2023-05-07T00:01:45.705Z</lastmod>
+    <lastmod>2023-05-07T00:47:45.802Z</lastmod>
   </url>
   <url>
     <loc>https://ywang408.github.io/paper_analyzer/Introduction.html</loc>
-    <lastmod>2023-05-07T00:01:45.898Z</lastmod>
+    <lastmod>2023-05-07T00:47:45.992Z</lastmod>
   </url>
   <url>
     <loc>https://ywang408.github.io/paper_analyzer/ml.html</loc>
-    <lastmod>2023-05-07T00:01:46.271Z</lastmod>
+    <lastmod>2023-05-07T00:47:46.392Z</lastmod>
   </url>
   <url>
     <loc>https://ywang408.github.io/paper_analyzer/scrape.html</loc>
-    <lastmod>2023-05-07T00:01:46.558Z</lastmod>
+    <lastmod>2023-05-07T00:47:46.662Z</lastmod>
   </url>
   <url>
     <loc>https://ywang408.github.io/paper_analyzer/visualization.html</loc>
-    <lastmod>2023-05-07T00:01:46.745Z</lastmod>
+    <lastmod>2023-05-07T00:47:46.849Z</lastmod>
   </url>
 </urlset>

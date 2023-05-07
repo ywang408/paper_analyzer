@@ -65,6 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./dl.html" rel="next">
 <link href="./visualization.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -186,6 +187,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Machine Learning Models</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dl.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Deep Learning Models on Classification</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -234,8 +241,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p>In this section, we explore unsupervised machine learning algorithms such as K-means clustering, Gaussian Mixture Model (GMM), and Latent Dirichlet Allocation (LDA) to group papers based on their underlying topics and extract the most important keywords within each subcategory.</p>
-<p>These approaches rely on the assumption that similar papers will have similar distributions of words or features, and thus can be clustered together. LDA, a popular topic modeling technique, can uncover the underlying themes and topics present in a corpus of documents, generating a set of topics represented by a distribution of words.</p>
+<p>In this section, we explore unsupervised machine learning algorithms such as K-means clustering, Gaussian Mixture Model (GMM), and Latent Dirichlet Allocation (LDA) to group papers based on their underlying topics and extract the most important keywords within each subcategory. These approaches rely on the assumption that similar papers will have similar distributions of words or features, and thus can be clustered together. LDA, a popular topic modeling technique, can uncover the underlying themes and topics present in a corpus of documents, generating a set of topics represented by a distribution of words.</p>
+<p>Next, we investigate supervised machine learning algorithms, including Support Vector Machines (SVM) and Random Forest, for paper classification and keywords extraction. These algorithms are trained on a labeled dataset, where each paper is associated with its corresponding subcategory, and learn to predict the subcategory of a given paper based on its features. To represent the textual content of the papers, we experiment with various feature extraction methods, such as bag-of-words, term frequency-inverse document frequency (TF-IDF), and pre-trained word embeddings. By training these algorithms on a diverse set of features, we can develop a robust and accurate model that can effectively categorize papers into their corresponding subcategories and extract the most important words in each subcategory, facilitating improved organization and navigation of the research landscape.</p>
 <p>By analyzing the most probable words within each topic, we can extract the most important keywords characterizing each subcategory, thus having valuable insights into the thematic organization of the Quantitative Finance domain.</p>
 <p><strong>Packages used in this section:</strong></p>
 <div class="cell" data-outputid="ae4de204-3318-485a-da52-e9a41f3c2b6e">
@@ -504,7 +511,7 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 <section id="unsupervised-learning" class="level3">
 <h3 class="anchored" data-anchor-id="unsupervised-learning">Unsupervised learning</h3>
-<p>We first tried clustering and LDA that were discussed in topic modeling session. We used the K-means, GMM and LDA.</p>
+<p>We first tried clustering and LDA that were discussed in topic modeling session. We used the K-means, GMM and LDA. After a comprehensive comparison of three unsupervised machine learning algorithms using various metrics in the classification report, we found that <strong>K-means</strong> had the best performance while GMM had the worst performance. Thus in the next subsections, we mainly analyze the results of K-means and only report the results of GMM and LDA.</p>
 <p>The code chunk shows the helper function <code>cluster</code> for all of the three unsupervised learning models.</p>
 <div class="cell">
 <details>
@@ -615,6 +622,10 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 <section id="k-means" class="level4">
 <h4 class="anchored" data-anchor-id="k-means">K-means</h4>
+<p>The next contents show results of the K-means algorithm, which provides valuable insights into the classification of academic papers into their respective subcategories within the Quantitative Finance domain. By examining the distribution of paper labels within each cluster, we observe that Cluster 0 is predominantly associated with Computational Finance (CP), Cluster 1 with Pricing of Securities (PR), Cluster 2 with Risk Management (RM), Cluster 3 with General Finance (GN), Cluster 4 with Portfolio Management (PM), Cluster 5 with Trading and Market Microstructure (TR), and Cluster 7 with Statistical Finance (ST). Notably, Cluster 6 shows a mix of topics and does not correspond to a specific subcategory, indicating that further refinement may be required in the clustering process.</p>
+<p>Examining the top words associated with each cluster, we find that they are coherent and representative of the respective subcategories. For example, the top words for Cluster 0 include ‘option’, ‘pricing’, ‘model’, and ‘price’, which are indicative of Computational Finance. Similarly, the top words for Cluster 2, which is associated with Risk Management, include ‘risk’, ‘portfolio’, ‘measure’, and ‘model’.</p>
+<p>In terms of classification performance, we report an overall accuracy of 0.44, with varying levels of precision, recall, and F1-score across the different subcategories. While some subcategories, such as General Finance and Trading and Market Microstructure, demonstrate relatively high performance (F1-scores of 0.55 and 0.58, respectively), others, such as Mathematical Finance, show room for improvement (F1-score of 0.00).</p>
+<p>These results suggest that while our K-means clustering approach has been successful in identifying and characterizing the majority of subcategories within the Quantitative Finance domain, further refinements in the methodology, such as incorporating more sophisticated feature extraction techniques or alternative clustering algorithms, may be necessary to improve the classification performance for certain subcategories. Overall, our analysis demonstrates the potential of unsupervised learning techniques, such as K-means clustering, for effectively classifying academic papers and identifying important keywords in the rapidly evolving field of Quantitative Finance.</p>
 <div class="cell" data-outputid="1e392b77-ebfd-4a84-b860-710f551f091a">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>cluster(train_df, test_df, num_clusters <span class="op">=</span> <span class="dv">8</span>, min_df <span class="op">=</span> <span class="dv">5</span>, stopwords <span class="op">=</span> <span class="st">'english'</span>, method <span class="op">=</span> <span class="st">'k-mean'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -783,7 +794,9 @@ weighted avg       0.34      0.42      0.37      1930
 </section>
 <section id="supervised-learning" class="level3">
 <h3 class="anchored" data-anchor-id="supervised-learning">Supervised Learning</h3>
-<p>As it is a multi-class classification problem, we used the OneVsRestClassifer in scikit-learn package. For the base classifiers, we tried Linear SVC and RandomForest Classifiers.</p>
+<p>Since our dataset has the label for each observation, we also apply the supervised machine learning algorithms, Linear SVC and Random Forest Classifiers. As it is a multi-class classification problem, we used the OneVsRestClassifer in the scikit-learn package.</p>
+<p>Supervised machine learning algorithms generally have better performance than unsupervised machine learning algorithms. Compared to Linear SVC, the results of our Random Forest Classifier for categorizing academic papers within the Quantitative Finance domain demonstrate promising performance, with an overall accuracy of 0.62. The classification metrics across the subcategories display variability, as shown by the differences in precision, recall, and F1-score. Certain subcategories, such as General Finance (GN) and Trading and Market Microstructure (TR), exhibit relatively high performance with F1-scores of 0.69 and 0.65, respectively. In contrast, Mathematical Finance (MF) and Computational Finance (CP) present lower performance with F1-scores of 0.43 and 0.51, respectively. These findings illustrate the effectiveness of supervised machine learning techniques, such as the Random Forest Classifier, in accurately classifying academic papers and identifying significant keywords within the Quantitative Finance field.</p>
+<p>In addition, for the best model in this subsection, we further show the Precision-Recall Curve and ROC Curve to enhance the visualization of the performance of Random Forest Classifiers. However, the results also highlight the necessity for further refinements in the methodology to improve classification performance for specific subcategories.</p>
 <div class="cell" data-outputid="cbef5851-ae38-48ad-8624-207958ffd781">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#One Hot Encoding </span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>categories <span class="op">=</span> np.unique(df[<span class="st">'subcategory'</span>]).tolist()</span>
@@ -1367,6 +1380,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./dl.html" class="pagination-link">
+        <span class="nav-page-text">Deep Learning Models on Classification</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
