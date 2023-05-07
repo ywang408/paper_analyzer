@@ -2,42 +2,46 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://ywang408.github.io/paper_analyzer/ada.html</loc>
-    <lastmod>2023-05-07T01:03:04.669Z</lastmod>
+    <lastmod>2023-05-07T02:19:34.273Z</lastmod>
   </url>
   <url>
     <loc>https://ywang408.github.io/paper_analyzer/bert_ml.html</loc>
-    <lastmod>2023-05-07T01:03:04.922Z</lastmod>
+    <lastmod>2023-05-07T02:19:34.563Z</lastmod>
   </url>
   <url>
     <loc>https://ywang408.github.io/paper_analyzer/dl.html</loc>
-    <lastmod>2023-05-07T01:03:05.342Z</lastmod>
+    <lastmod>2023-05-07T02:19:34.977Z</lastmod>
   </url>
   <url>
     <loc>https://ywang408.github.io/paper_analyzer/fine.html</loc>
-    <lastmod>2023-05-07T01:03:05.645Z</lastmod>
+    <lastmod>2023-05-07T02:19:35.220Z</lastmod>
   </url>
   <url>
     <loc>https://ywang408.github.io/paper_analyzer/gpt3.5.html</loc>
-    <lastmod>2023-05-07T01:03:05.839Z</lastmod>
+    <lastmod>2023-05-07T02:19:35.380Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ywang408.github.io/paper_analyzer/gpt3_5.html</loc>
+    <lastmod>2023-05-07T02:19:35.617Z</lastmod>
   </url>
   <url>
     <loc>https://ywang408.github.io/paper_analyzer/index.html</loc>
-    <lastmod>2023-05-07T01:03:06.115Z</lastmod>
+    <lastmod>2023-05-07T02:19:35.897Z</lastmod>
   </url>
   <url>
     <loc>https://ywang408.github.io/paper_analyzer/Introduction.html</loc>
-    <lastmod>2023-05-07T01:03:06.299Z</lastmod>
+    <lastmod>2023-05-07T02:19:36.070Z</lastmod>
   </url>
   <url>
     <loc>https://ywang408.github.io/paper_analyzer/ml.html</loc>
-    <lastmod>2023-05-07T01:03:06.699Z</lastmod>
+    <lastmod>2023-05-07T02:19:36.483Z</lastmod>
   </url>
   <url>
     <loc>https://ywang408.github.io/paper_analyzer/scrape.html</loc>
-    <lastmod>2023-05-07T01:03:06.969Z</lastmod>
+    <lastmod>2023-05-07T02:19:36.737Z</lastmod>
   </url>
   <url>
     <loc>https://ywang408.github.io/paper_analyzer/visualization.html</loc>
-    <lastmod>2023-05-07T01:03:07.159Z</lastmod>
+    <lastmod>2023-05-07T02:19:36.910Z</lastmod>
   </url>
 </urlset>
