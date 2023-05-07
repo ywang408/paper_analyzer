@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.340">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2023-05-03">
+
+<title>Analysis of Arxiv Papers - Machine Learning Models</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./visualization.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ml.html">Methodology</a></li><li class="breadcrumb-item"><a href="./ml.html">Machine Learning Models</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Analysis of Arxiv Papers</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Intro and Motivation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Data Collection and Visualization</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./scrape.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Scrape data from Arxiv</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Visualization</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Methodology</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ml.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Machine Learning Models</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#data-introduction" id="toc-data-introduction" class="nav-link active" data-scroll-target="#data-introduction">Data Introduction</a></li>
+  <li><a href="#data-cleaning" id="toc-data-cleaning" class="nav-link" data-scroll-target="#data-cleaning">Data Cleaning</a></li>
+  <li><a href="#topic-modeling" id="toc-topic-modeling" class="nav-link" data-scroll-target="#topic-modeling">Topic Modeling</a>
+  <ul class="collapse">
+  <li><a href="#unsupervised-learning" id="toc-unsupervised-learning" class="nav-link" data-scroll-target="#unsupervised-learning">Unsupervised learning</a></li>
+  <li><a href="#supervised-learning" id="toc-supervised-learning" class="nav-link" data-scroll-target="#supervised-learning">Supervised Learning</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Machine Learning Models</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 3, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>In this section, we explore unsupervised machine learning algorithms such as K-means clustering, Gaussian Mixture Model (GMM), and Latent Dirichlet Allocation (LDA) to group papers based on their underlying topics and extract the most important keywords within each subcategory.</p>
+<p>These approaches rely on the assumption that similar papers will have similar distributions of words or features, and thus can be clustered together. LDA, a popular topic modeling technique, can uncover the underlying themes and topics present in a corpus of documents, generating a set of topics represented by a distribution of words.</p>
+<p>By analyzing the most probable words within each topic, we can extract the most important keywords characterizing each subcategory, thus having valuable insights into the thematic organization of the Quantitative Finance domain.</p>
+<p><strong>Packages used in this section:</strong></p>
+<div class="cell" data-outputid="ae4de204-3318-485a-da52-e9a41f3c2b6e">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bs4 <span class="im">import</span> BeautifulSoup</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#import matplotlib</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#matplotlib.use('Agg')</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.core.interactiveshell <span class="im">import</span> InteractiveShell</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>InteractiveShell.ast_node_interactivity <span class="op">=</span> <span class="st">"all"</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.cluster <span class="im">import</span> KMeansClusterer, cosine_distance, euclidean_distance</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> TfidfVectorizer, CountVectorizer</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> metrics</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.corpus <span class="im">import</span> stopwords</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> mixture</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> LatentDirichletAllocation</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics.pairwise <span class="im">import</span> cosine_similarity</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">#from sklearn.metrics import pairwise_distances</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">"ignore"</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> spacy</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>nlp <span class="op">=</span> spacy.load(<span class="st">'en_core_web_sm'</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ast</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> LinearSVC, SVC</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> MultiLabelBinarizer</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> precision_recall_curve, roc_curve</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.multiclass <span class="im">import</span> OneVsRestClassifier</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> ConfusionMatrixDisplay</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>2023-05-03 15:04:44.566271: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.</code></pre>
+</div>
+</div>
+<section id="data-introduction" class="level3">
+<h3 class="anchored" data-anchor-id="data-introduction">Data Introduction</h3>
+<p>We used the scraper to download 10,000 finance related paper and extracted their subcategories. There are in total of 9 subcategories/ However, as the subcategory for Econ only counts for about 3% of the total documents and arXiv also has a seperate category for Econ, we removed all the documents with subcategory econ but under the q-fin main category. There are in total of 9,649 documents.</p>
+</section>
+<section id="data-cleaning" class="level3">
+<h3 class="anchored" data-anchor-id="data-cleaning">Data Cleaning</h3>
+<p>We used the spaCy library to perform the task of data cleaning. We only kept the alphabetic token that also are not stopwords and lemmatized them. For the sake of convenience, we stored it as a csv file for later use. Here we define a helper function <code>custom_tokenize</code> to offer the flexibility of using different tokenization methods.</p>
+<div class="cell" data-outputid="597141b6-c6ac-4ed1-97c2-ac813f04d866">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> nltk</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.corpus <span class="im">import</span> stopwords</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.stem <span class="im">import</span> WordNetLemmatizer</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> BertTokenizer</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#nltk.download('wordnet')</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>nltk.download(<span class="st">'stopwords'</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> BertTokenizer.from_pretrained(<span class="st">'bert-base-uncased'</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>lemmatizer <span class="op">=</span> WordNetLemmatizer()</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>stopwords_set <span class="op">=</span> <span class="bu">set</span>(stopwords.words(<span class="st">'english'</span>))</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> custom_tokenize(text):</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> text.lower()</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r"[^a-z]"</span>, <span class="st">" "</span>, text)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    tokens <span class="op">=</span> tokenizer.basic_tokenizer.tokenize(text)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    lemmatized_tokens <span class="op">=</span> [lemmatizer.lemmatize(token) <span class="cf">for</span> token <span class="kw">in</span> tokens]</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    filtered_tokens <span class="op">=</span> [token <span class="cf">for</span> token <span class="kw">in</span> lemmatized_tokens <span class="cf">if</span> token <span class="kw">not</span> <span class="kw">in</span> stopwords_set]</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> filtered_tokens</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> <span class="st">"This is an example sentence with 123 special characters &amp; symbols, and some stopwords."</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>tokens <span class="op">=</span> custom_tokenize(text)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(tokens)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>[nltk_data] Downloading package stopwords to
+[nltk_data]     /Users/shengyuhuang/nltk_data...
+[nltk_data]   Package stopwords is already up-to-date!</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code>True</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['example', 'sentence', 'special', 'character', 'symbol', 'stopwords']</code></pre>
+</div>
+</div>
+<p>Read and process data:</p>
+<p>Here we drop category <strong>EC</strong> which stands for econ, since we already have a seperate category for econ in arXiv.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"fin_papers.csv"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'subcategory'</span>] <span class="op">=</span> df[<span class="st">'term'</span>].<span class="bu">str</span>.split(<span class="st">'.'</span>).<span class="bu">str</span>[<span class="dv">1</span>]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[df[<span class="st">'subcategory'</span>]<span class="op">!=</span><span class="st">'EC'</span>]</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'summary'</span>]  <span class="op">=</span> df[<span class="st">'title'</span>] <span class="op">+</span> df[<span class="st">'summary'</span>]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'combined_Bert'</span>] <span class="op">=</span> (<span class="st">"Title: "</span><span class="op">+</span>df.title.<span class="bu">str</span>.strip() <span class="op">+</span> <span class="st">"; Content: "</span><span class="op">+</span>df.summary.<span class="bu">str</span>.strip())</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'tokenized_summary'</span>] <span class="op">=</span> df[<span class="st">'summary'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> text: custom_tokenize(text))</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>df.head()</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>df.to_csv(<span class="st">'qfin_processed_data.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="topic-modeling" class="level2">
+<h2 class="anchored" data-anchor-id="topic-modeling">Topic Modeling</h2>
+<div class="cell" data-outputid="57f8f52b-8f46-4972-924b-d49bc3082710">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'qfin_processed_data.csv'</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.drop(columns<span class="op">=</span>[<span class="st">'Unnamed: 0'</span>])</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"tokenized_summary"</span>] <span class="op">=</span> df[<span class="st">"tokenized_summary"</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: ast.literal_eval(x))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Combine the tokenized list back to a string </span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"tokenized_summary_new"</span>] <span class="op">=</span> df[<span class="st">"tokenized_summary"</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: <span class="st">' '</span>.join(x)) </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">paper_id</th>
+<th data-quarto-table-cell-role="th">updated</th>
+<th data-quarto-table-cell-role="th">published</th>
+<th data-quarto-table-cell-role="th">title</th>
+<th data-quarto-table-cell-role="th">authors</th>
+<th data-quarto-table-cell-role="th">summary</th>
+<th data-quarto-table-cell-role="th">comment</th>
+<th data-quarto-table-cell-role="th">link</th>
+<th data-quarto-table-cell-role="th">doi</th>
+<th data-quarto-table-cell-role="th">pdf_link</th>
+<th data-quarto-table-cell-role="th">term</th>
+<th data-quarto-table-cell-role="th">num_figures</th>
+<th data-quarto-table-cell-role="th">num_pages</th>
+<th data-quarto-table-cell-role="th">num_eqs</th>
+<th data-quarto-table-cell-role="th">main_category</th>
+<th data-quarto-table-cell-role="th">subcategory</th>
+<th data-quarto-table-cell-role="th">combined_Bert</th>
+<th data-quarto-table-cell-role="th">tokenized_summary</th>
+<th data-quarto-table-cell-role="th">tokenized_summary_new</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>http://arxiv.org/abs/2304.13610v1</td>
+<td>2023-04-26 15:05:19+00:00</td>
+<td>2023-04-26 15:05:19+00:00</td>
+<td>Maximum Implied Variance Slope -- Practical As...</td>
+<td>["Fabien Le Floc'h", 'Winfried Koller']</td>
+<td>Maximum Implied Variance Slope -- Practical As...</td>
+<td>NaN</td>
+<td>http://arxiv.org/abs/2304.13610v1</td>
+<td>NaN</td>
+<td>http://arxiv.org/pdf/2304.13610v1</td>
+<td>q-fin.PR</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>q-fin</td>
+<td>PR</td>
+<td>Title: Maximum Implied Variance Slope -- Pract...</td>
+<td>[maximum, implied, variance, slope, practical,...</td>
+<td>maximum implied variance slope practical aspec...</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>http://arxiv.org/abs/2206.02582v2</td>
+<td>2023-04-26 13:13:28+00:00</td>
+<td>2022-06-06 12:43:06+00:00</td>
+<td>Making heads or tails of systemic risk measures</td>
+<td>['Aleksy Leeuwenkamp']</td>
+<td>Making heads or tails of systemic risk measure...</td>
+<td>Revised version of the $\Delta$-CoES paper, no...</td>
+<td>http://arxiv.org/abs/2206.02582v2</td>
+<td>NaN</td>
+<td>http://arxiv.org/pdf/2206.02582v2</td>
+<td>q-fin.RM</td>
+<td>0</td>
+<td>22</td>
+<td>4</td>
+<td>q-fin</td>
+<td>RM</td>
+<td>Title: Making heads or tails of systemic risk ...</td>
+<td>[making, head, tail, systemic, risk, measure, ...</td>
+<td>making head tail systemic risk measure paper s...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>http://arxiv.org/abs/2301.00790v2</td>
+<td>2023-04-26 10:56:51+00:00</td>
+<td>2022-12-30 17:19:00+00:00</td>
+<td>Dynamic Feature Engineering and model selectio...</td>
+<td>['Thomas Wong', 'Mauricio Barahona']</td>
+<td>Dynamic Feature Engineering and model selectio...</td>
+<td>NaN</td>
+<td>http://arxiv.org/abs/2301.00790v2</td>
+<td>NaN</td>
+<td>http://arxiv.org/pdf/2301.00790v2</td>
+<td>q-fin.CP</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>q-fin</td>
+<td>CP</td>
+<td>Title: Dynamic Feature Engineering and model s...</td>
+<td>[dynamic, feature, engineering, model, selecti...</td>
+<td>dynamic feature engineering model selection me...</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>http://arxiv.org/abs/2304.13402v1</td>
+<td>2023-04-26 09:28:41+00:00</td>
+<td>2023-04-26 09:28:41+00:00</td>
+<td>Convexity adjustments à la Malliavin</td>
+<td>['David García-Lorite', 'Raul Merino']</td>
+<td>Convexity adjustments à la Malliavin In this ...</td>
+<td>NaN</td>
+<td>http://arxiv.org/abs/2304.13402v1</td>
+<td>NaN</td>
+<td>http://arxiv.org/pdf/2304.13402v1</td>
+<td>q-fin.MF</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>q-fin</td>
+<td>MF</td>
+<td>Title: Convexity adjustments à la Malliavin; C...</td>
+<td>[convexity, adjustment, la, malliavin, paper, ...</td>
+<td>convexity adjustment la malliavin paper develo...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>http://arxiv.org/abs/2304.13128v1</td>
+<td>2023-04-25 20:16:36+00:00</td>
+<td>2023-04-25 20:16:36+00:00</td>
+<td>Learning Volatility Surfaces using Generative ...</td>
+<td>['Andrew Na', 'Meixin Zhang', 'Justin Wan']</td>
+<td>Learning Volatility Surfaces using Generative ...</td>
+<td>This is a working draft</td>
+<td>http://arxiv.org/abs/2304.13128v1</td>
+<td>NaN</td>
+<td>http://arxiv.org/pdf/2304.13128v1</td>
+<td>q-fin.CP</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>q-fin</td>
+<td>CP</td>
+<td>Title: Learning Volatility Surfaces using Gene...</td>
+<td>[learning, volatility, surface, using, generat...</td>
+<td>learning volatility surface using generative a...</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>train_df, test_df<span class="op">=</span> train_test_split(df, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>train_df <span class="op">=</span> train_df.reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>test_df <span class="op">=</span> test_df.reset_index(drop<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="unsupervised-learning" class="level3">
+<h3 class="anchored" data-anchor-id="unsupervised-learning">Unsupervised learning</h3>
+<p>We first tried clustering and LDA that were discussed in topic modeling session. We used the K-means, GMM and LDA.</p>
+<p>The code chunk shows the helper function <code>cluster</code> for all of the three unsupervised learning models.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cluster(train_data, test_data, num_clusters, min_df <span class="op">=</span> <span class="dv">1</span>, stopwords <span class="op">=</span> <span class="va">None</span>, method <span class="op">=</span> <span class="st">'k-mean'</span>):</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    train_temp <span class="op">=</span> train_data.copy() </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    test_temp <span class="op">=</span> test_data.copy()</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    train_temp[<span class="st">"tokenized_summary"</span>] <span class="op">=</span> train_data[<span class="st">"tokenized_summary"</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: <span class="st">' '</span>.join(x))</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    test_temp[<span class="st">"tokenized_summary"</span>] <span class="op">=</span> test_data[<span class="st">"tokenized_summary"</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: <span class="st">' '</span>.join(x))</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>   <span class="co"># add your code</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> method <span class="op">==</span> <span class="st">'k-mean'</span>:</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>        clusterer <span class="op">=</span> KMeansClusterer(num_clusters, cosine_distance, repeats<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        tfidf_vect <span class="op">=</span> TfidfVectorizer(stop_words<span class="op">=</span>stopwords, min_df<span class="op">=</span>min_df)     </span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>        dtm <span class="op">=</span> tfidf_vect.fit_transform(train_temp[<span class="st">"tokenized_summary"</span>])</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>        clusters <span class="op">=</span> clusterer.cluster(dtm.toarray(), assign_clusters<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>        test_dtm <span class="op">=</span> tfidf_vect.transform(test_temp[<span class="st">"tokenized_summary"</span>])</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>        predicted <span class="op">=</span> [clusterer.classify(v) <span class="cf">for</span> v <span class="kw">in</span> test_dtm.toarray()]</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> method <span class="op">==</span> <span class="st">'gmm'</span>:</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>        gmm <span class="op">=</span> mixture.GaussianMixture(n_components<span class="op">=</span>num_clusters,</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>                                      covariance_type<span class="op">=</span><span class="st">'diag'</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>        tfidf_vect <span class="op">=</span> TfidfVectorizer(stop_words<span class="op">=</span>stopwords, min_df<span class="op">=</span>min_df)</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>        dtm<span class="op">=</span> tfidf_vect.fit_transform(train_temp[<span class="st">"tokenized_summary"</span>])</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>        gmm.fit(dtm.toarray())</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>        test_dtm <span class="op">=</span> tfidf_vect.transform(test_temp[<span class="st">"tokenized_summary"</span>])</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>        predicted <span class="op">=</span> gmm.predict(test_dtm.toarray())</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>: </span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>        tfidf_vect <span class="op">=</span> CountVectorizer(min_df <span class="op">=</span> min_df, stop_words <span class="op">=</span> stopwords)</span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>        X_train <span class="op">=</span> tfidf_vect.fit_transform(train_temp[<span class="st">"tokenized_summary"</span>])</span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>        lda <span class="op">=</span> LatentDirichletAllocation(n_components<span class="op">=</span>num_clusters, <span class="op">\</span></span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>                                max_iter<span class="op">=</span><span class="dv">20</span>,verbose<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>                                evaluate_every<span class="op">=</span><span class="dv">1</span>, n_jobs<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>                                random_state<span class="op">=</span><span class="dv">0</span>).fit(X_train)</span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>        X_test <span class="op">=</span> tfidf_vect.transform(test_temp[<span class="st">"tokenized_summary"</span>])</span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>        doc_topic <span class="op">=</span> lda.transform(X_test)</span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a>        predicted <span class="op">=</span> doc_topic.argmax(axis <span class="op">=</span> <span class="dv">1</span>)</span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a>    confusion_df <span class="op">=</span> pd.DataFrame(<span class="bu">list</span>(<span class="bu">zip</span>(test_temp[<span class="st">"subcategory"</span>].values, predicted)),columns <span class="op">=</span> [<span class="st">"label"</span>, <span class="st">"cluster"</span>])</span>
+<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span> (pd.crosstab( index<span class="op">=</span>confusion_df.cluster, columns<span class="op">=</span>confusion_df.label))</span>
+<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Apply majority vote rule to dynamically map each cluster to a ground-truth label in test_data</span></span>
+<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a>    label_allocation <span class="op">=</span> pd.DataFrame(confusion_df.groupby(<span class="st">'cluster'</span>)[<span class="st">'label'</span>].<span class="bu">apply</span><span class="op">\</span></span>
+<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a>                                    (<span class="kw">lambda</span> x: x.value_counts().idxmax()))</span>
+<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Interpret each cluster by centroid</span></span>
+<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-68"><a href="#cb10-68" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> method <span class="kw">in</span> [<span class="st">'k-mean'</span>,<span class="st">'gmm'</span>]:</span>
+<span id="cb10-69"><a href="#cb10-69" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-70"><a href="#cb10-70" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> method <span class="op">==</span><span class="st">'k-mean'</span>:</span>
+<span id="cb10-71"><a href="#cb10-71" aria-hidden="true" tabindex="-1"></a>            centroids<span class="op">=</span>np.array(clusterer.means())</span>
+<span id="cb10-72"><a href="#cb10-72" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb10-73"><a href="#cb10-73" aria-hidden="true" tabindex="-1"></a>            centroids<span class="op">=</span>np.array(gmm.means_)</span>
+<span id="cb10-74"><a href="#cb10-74" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-75"><a href="#cb10-75" aria-hidden="true" tabindex="-1"></a>        sorted_centroids <span class="op">=</span> centroids.argsort()[:, ::<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb10-76"><a href="#cb10-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-77"><a href="#cb10-77" aria-hidden="true" tabindex="-1"></a>        voc_lookup<span class="op">=</span> tfidf_vect.get_feature_names_out()</span>
+<span id="cb10-78"><a href="#cb10-78" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-79"><a href="#cb10-79" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(num_clusters):</span>
+<span id="cb10-80"><a href="#cb10-80" aria-hidden="true" tabindex="-1"></a>            top_words<span class="op">=</span>[voc_lookup[word_index] <span class="cf">for</span> word_index <span class="kw">in</span> sorted_centroids[i, :<span class="dv">10</span>]]</span>
+<span id="cb10-81"><a href="#cb10-81" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span> (<span class="st">'Cluster </span><span class="sc">{}</span><span class="st"> -&gt; Topic </span><span class="sc">{}</span><span class="st">'</span>.<span class="bu">format</span>(i,label_allocation[<span class="st">'label'</span>][i]))</span>
+<span id="cb10-82"><a href="#cb10-82" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span> (<span class="st">'    top words: '</span> <span class="op">+</span><span class="bu">str</span>(top_words))</span>
+<span id="cb10-83"><a href="#cb10-83" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-84"><a href="#cb10-84" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>: </span>
+<span id="cb10-85"><a href="#cb10-85" aria-hidden="true" tabindex="-1"></a>        voc_lookup<span class="op">=</span> tfidf_vect.get_feature_names_out()</span>
+<span id="cb10-86"><a href="#cb10-86" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-87"><a href="#cb10-87" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-88"><a href="#cb10-88" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> topic_idx, topic <span class="kw">in</span> <span class="bu">enumerate</span>(lda.components_):</span>
+<span id="cb10-89"><a href="#cb10-89" aria-hidden="true" tabindex="-1"></a>            top_words<span class="op">=</span>[voc_lookup[i] <span class="cf">for</span> i <span class="kw">in</span> topic.argsort()[::<span class="op">-</span><span class="dv">1</span>][<span class="dv">0</span>:<span class="dv">10</span>]]</span>
+<span id="cb10-90"><a href="#cb10-90" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span> (<span class="st">'Cluster </span><span class="sc">{}</span><span class="st"> -&gt; Topic </span><span class="sc">{}</span><span class="st">'</span>.<span class="bu">format</span>(topic_idx,label_allocation[<span class="st">'label'</span>][topic_idx]))</span>
+<span id="cb10-91"><a href="#cb10-91" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span> (<span class="st">'    top words: '</span> <span class="op">+</span><span class="bu">str</span>(top_words))</span>
+<span id="cb10-92"><a href="#cb10-92" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-93"><a href="#cb10-93" aria-hidden="true" tabindex="-1"></a>    <span class="co">#classification report</span></span>
+<span id="cb10-94"><a href="#cb10-94" aria-hidden="true" tabindex="-1"></a>    cluster_dict <span class="op">=</span> {}</span>
+<span id="cb10-95"><a href="#cb10-95" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(num_clusters):</span>
+<span id="cb10-96"><a href="#cb10-96" aria-hidden="true" tabindex="-1"></a>        cluster_dict[i] <span class="op">=</span> label_allocation[<span class="st">'label'</span>][i]</span>
+<span id="cb10-97"><a href="#cb10-97" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-98"><a href="#cb10-98" aria-hidden="true" tabindex="-1"></a>    predicted_target<span class="op">=</span>[cluster_dict[i] <span class="cf">for</span> i <span class="kw">in</span> predicted]</span>
+<span id="cb10-99"><a href="#cb10-99" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-100"><a href="#cb10-100" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(metrics.classification_report(test_temp[<span class="st">"subcategory"</span>], predicted_target))</span>
+<span id="cb10-101"><a href="#cb10-101" aria-hidden="true" tabindex="-1"></a>     </span>
+<span id="cb10-102"><a href="#cb10-102" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="k-means" class="level4">
+<h4 class="anchored" data-anchor-id="k-means">K-means</h4>
+<div class="cell" data-outputid="1e392b77-ebfd-4a84-b860-710f551f091a">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>cluster(train_df, test_df, num_clusters <span class="op">=</span> <span class="dv">8</span>, min_df <span class="op">=</span> <span class="dv">5</span>, stopwords <span class="op">=</span> <span class="st">'english'</span>, method <span class="op">=</span> <span class="st">'k-mean'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>label    CP   GN  MF  PM  PR   RM   ST   TR
+cluster                                    
+0        86    3  46   2  78    6    3    3
+1        29    6  40   2  43    3   37    4
+2        11   21  17  63   3  101   17    0
+3        17   20  39   3  58   43   10    4
+4        22    8  73  82  18   15    3    9
+5        19  176   7   3   3   24   93   20
+6         8   21  27   7   7    4   26  115
+7        25   45   8  17   5   11  182   29
+Cluster 0 -&gt; Topic CP
+    top words: ['option', 'pricing', 'model', 'price', 'method', 'hedging', 'black', 'scholes', 'numerical', 'american']
+Cluster 1 -&gt; Topic PR
+    top words: ['volatility', 'model', 'implied', 'stochastic', 'price', 'option', 'process', 'rough', 'heston', 'jump']
+Cluster 2 -&gt; Topic RM
+    top words: ['risk', 'portfolio', 'measure', 'model', 'optimization', 'asset', 'return', 'approach', 'distribution', 'value']
+Cluster 3 -&gt; Topic PR
+    top words: ['default', 'credit', 'model', 'rate', 'risk', 'arbitrage', 'bond', 'bank', 'market', 'pricing']
+Cluster 4 -&gt; Topic PM
+    top words: ['optimal', 'problem', 'utility', 'strategy', 'portfolio', 'investment', 'function', 'solution', 'time', 'process']
+Cluster 5 -&gt; Topic GN
+    top words: ['distribution', 'model', 'financial', 'economic', 'network', 'time', 'data', 'agent', 'market', 'growth']
+Cluster 6 -&gt; Topic TR
+    top words: ['order', 'trading', 'market', 'price', 'book', 'impact', 'strategy', 'limit', 'model', 'agent']
+Cluster 7 -&gt; Topic ST
+    top words: ['stock', 'market', 'price', 'correlation', 'data', 'model', 'return', 'financial', 'time', 'learning']
+              precision    recall  f1-score   support
+
+          CP       0.38      0.40      0.39       217
+          GN       0.51      0.59      0.55       300
+          MF       0.00      0.00      0.00       257
+          PM       0.36      0.46      0.40       179
+          PR       0.28      0.47      0.35       215
+          RM       0.43      0.49      0.46       207
+          ST       0.57      0.49      0.53       371
+          TR       0.53      0.62      0.58       184
+
+    accuracy                           0.44      1930
+   macro avg       0.38      0.44      0.41      1930
+weighted avg       0.39      0.44      0.41      1930
+</code></pre>
+</div>
+</div>
+</section>
+<section id="gaussian-mixture-model" class="level4">
+<h4 class="anchored" data-anchor-id="gaussian-mixture-model">Gaussian Mixture Model</h4>
+<div class="cell" data-outputid="0be46cab-aac8-4b59-a21c-6955c5ddfa9e">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>cluster(train_df, test_df, num_clusters <span class="op">=</span> <span class="dv">8</span>, min_df <span class="op">=</span> <span class="dv">5</span>, stopwords <span class="op">=</span> <span class="st">'english'</span>, method <span class="op">=</span> <span class="st">'gmm'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>label    CP   GN  MF  PM  PR  RM   ST  TR
+cluster                                  
+0         2   13   4   5   5   9   25   4
+1        23    1  31   2  27   3   17   2
+2         8   14  20  16   4   7   28  45
+3         1    0   2   2   1   3    8  13
+4        84  243  61  61  58  91  251  98
+5        69    3  52   3  66  15    9   3
+6        15   15  24  27  28  58   26  10
+7        15   11  63  63  26  21    7   9
+Cluster 0 -&gt; Topic ST
+    top words: ['distribution', 'model', 'return', 'income', 'tail', 'wealth', 'time', 'law', 'probability', 'financial']
+Cluster 1 -&gt; Topic MF
+    top words: ['volatility', 'model', 'implied', 'stochastic', 'option', 'price', 'rough', 'process', 'time', 'market']
+Cluster 2 -&gt; Topic TR
+    top words: ['trading', 'market', 'agent', 'strategy', 'price', 'model', 'learning', 'impact', 'cost', 'stock']
+Cluster 3 -&gt; Topic TR
+    top words: ['order', 'book', 'limit', 'price', 'market', 'model', 'impact', 'lob', 'flow', 'stock']
+Cluster 4 -&gt; Topic ST
+    top words: ['market', 'stock', 'model', 'financial', 'time', 'network', 'price', 'data', 'correlation', 'analysis']
+Cluster 5 -&gt; Topic CP
+    top words: ['option', 'pricing', 'model', 'price', 'method', 'hedging', 'equation', 'process', 'numerical', 'american']
+Cluster 6 -&gt; Topic RM
+    top words: ['risk', 'measure', 'model', 'portfolio', 'default', 'credit', 'systemic', 'financial', 'network', 'capital']
+Cluster 7 -&gt; Topic MF
+    top words: ['optimal', 'portfolio', 'problem', 'utility', 'strategy', 'risk', 'investment', 'function', 'asset', 'optimization']
+              precision    recall  f1-score   support
+
+          CP       0.31      0.32      0.32       217
+          GN       0.00      0.00      0.00       300
+          MF       0.29      0.37      0.33       257
+          PM       0.00      0.00      0.00       179
+          PR       0.00      0.00      0.00       215
+          RM       0.29      0.28      0.28       207
+          ST       0.27      0.74      0.40       371
+          TR       0.34      0.32      0.33       184
+
+    accuracy                           0.29      1930
+   macro avg       0.19      0.25      0.21      1930
+weighted avg       0.19      0.29      0.22      1930
+</code></pre>
+</div>
+</div>
+</section>
+<section id="latent-dirichlet-allocation" class="level4">
+<h4 class="anchored" data-anchor-id="latent-dirichlet-allocation">Latent Dirichlet Allocation</h4>
+<div class="cell" data-outputid="0363c31d-9e45-4591-8b94-072ca2b7923e">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>cluster(train_df, test_df, num_clusters <span class="op">=</span> <span class="dv">8</span>, min_df <span class="op">=</span> <span class="dv">5</span>, stopwords <span class="op">=</span> <span class="st">'english'</span>, method <span class="op">=</span> <span class="st">'lda'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>iteration: 1 of max_iter: 20, perplexity: 1662.1941
+iteration: 2 of max_iter: 20, perplexity: 1474.4942
+iteration: 3 of max_iter: 20, perplexity: 1372.6859
+iteration: 4 of max_iter: 20, perplexity: 1318.5665
+iteration: 5 of max_iter: 20, perplexity: 1288.2508
+iteration: 6 of max_iter: 20, perplexity: 1270.3625
+iteration: 7 of max_iter: 20, perplexity: 1259.0478
+iteration: 8 of max_iter: 20, perplexity: 1251.2028
+iteration: 9 of max_iter: 20, perplexity: 1245.4672
+iteration: 10 of max_iter: 20, perplexity: 1241.2476
+iteration: 11 of max_iter: 20, perplexity: 1238.0928
+iteration: 12 of max_iter: 20, perplexity: 1235.7949
+iteration: 13 of max_iter: 20, perplexity: 1234.0271
+iteration: 14 of max_iter: 20, perplexity: 1232.5545
+iteration: 15 of max_iter: 20, perplexity: 1231.4097
+iteration: 16 of max_iter: 20, perplexity: 1230.4636
+iteration: 17 of max_iter: 20, perplexity: 1229.6428
+iteration: 18 of max_iter: 20, perplexity: 1228.9761
+iteration: 19 of max_iter: 20, perplexity: 1228.3584
+iteration: 20 of max_iter: 20, perplexity: 1227.8524
+label    CP   GN   MF  PM  PR  RM   ST  TR
+cluster                                   
+0         5    9   16  63   1   5   17  70
+1        19   17  128  66  49  13    4  12
+2        55    3   57   1  85   7   37   5
+3        13  150    6   7  11  38   39  18
+4        14   73   10   6   7  16  149  44
+5        33   28    8  16   2  20  119  32
+6        74    2   26  17  53  75    4   2
+7         4   18    6   3   7  33    2   1
+Cluster 0 -&gt; Topic TR
+    top words: ['portfolio', 'market', 'trading', 'strategy', 'order', 'asset', 'optimal', 'risk', 'price', 'model']
+Cluster 1 -&gt; Topic MF
+    top words: ['optimal', 'problem', 'time', 'market', 'price', 'model', 'utility', 'process', 'strategy', 'function']
+Cluster 2 -&gt; Topic PR
+    top words: ['model', 'volatility', 'process', 'option', 'price', 'stochastic', 'pricing', 'time', 'rate', 'jump']
+Cluster 3 -&gt; Topic GN
+    top words: ['financial', 'market', 'network', 'risk', 'bank', 'economic', 'firm', 'crisis', 'systemic', 'country']
+Cluster 4 -&gt; Topic ST
+    top words: ['market', 'time', 'distribution', 'model', 'stock', 'price', 'return', 'financial', 'correlation', 'dynamic']
+Cluster 5 -&gt; Topic ST
+    top words: ['stock', 'data', 'model', 'market', 'learning', 'price', 'financial', 'based', 'using', 'network']
+Cluster 6 -&gt; Topic RM
+    top words: ['risk', 'measure', 'option', 'method', 'pricing', 'approach', 'value', 'hedging', 'problem', 'model']
+Cluster 7 -&gt; Topic RM
+    top words: ['model', 'risk', 'rate', 'insurance', 'capital', 'bond', 'company', 'loss', 'life', 'income']
+              precision    recall  f1-score   support
+
+          CP       0.00      0.00      0.00       217
+          GN       0.53      0.50      0.52       300
+          MF       0.42      0.50      0.45       257
+          PM       0.00      0.00      0.00       179
+          PR       0.34      0.40      0.37       215
+          RM       0.33      0.52      0.40       207
+          ST       0.46      0.72      0.57       371
+          TR       0.38      0.38      0.38       184
+
+    accuracy                           0.42      1930
+   macro avg       0.31      0.38      0.34      1930
+weighted avg       0.34      0.42      0.37      1930
+</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="supervised-learning" class="level3">
+<h3 class="anchored" data-anchor-id="supervised-learning">Supervised Learning</h3>
+<p>As it is a multi-class classification problem, we used the OneVsRestClassifer in scikit-learn package. For the base classifiers, we tried Linear SVC and RandomForest Classifiers.</p>
+<div class="cell" data-outputid="cbef5851-ae38-48ad-8624-207958ffd781">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#One Hot Encoding </span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>categories <span class="op">=</span> np.unique(df[<span class="st">'subcategory'</span>]).tolist()</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>df[categories] <span class="op">=</span> pd.get_dummies(df[<span class="st">'subcategory'</span>])</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>df[categories]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">CP</th>
+<th data-quarto-table-cell-role="th">GN</th>
+<th data-quarto-table-cell-role="th">MF</th>
+<th data-quarto-table-cell-role="th">PM</th>
+<th data-quarto-table-cell-role="th">PR</th>
+<th data-quarto-table-cell-role="th">RM</th>
+<th data-quarto-table-cell-role="th">ST</th>
+<th data-quarto-table-cell-role="th">TR</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">9644</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9645</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">9646</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9647</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">9648</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+
+<p>9649 rows × 8 columns</p>
+</div>
+</div>
+</div>
+<p>Likewise, we defined a helper function <code>supervised_learning</code> to offer the flexibility of using different base classifiers.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> supervised_learning(train_df, test_df, min_df <span class="op">=</span> <span class="dv">1</span>, stopwords <span class="op">=</span> <span class="va">None</span>, base_model <span class="op">=</span> LinearSVC()):</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    tfidf_vect <span class="op">=</span> TfidfVectorizer(stop_words<span class="op">=</span>stopwords, min_df<span class="op">=</span>min_df)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    X_train <span class="op">=</span> tfidf_vect.fit_transform(train_df[<span class="st">'tokenized_summary_new'</span>])</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    y_train <span class="op">=</span> train_df[categories]</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    X_test <span class="op">=</span> tfidf_vect.transform(test_df[<span class="st">'tokenized_summary_new'</span>])</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    y_test <span class="op">=</span> test_df[categories].values</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> OneVsRestClassifier(base_model)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    model.fit(X_train, y_train)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>        predict_p <span class="op">=</span> model.predict_proba(X_test)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>        y_pred <span class="op">=</span> np.zeros_like(predict_p)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>        y_pred[np.arange(<span class="bu">len</span>(predict_p)), predict_p.argmax(<span class="dv">1</span>)] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(metrics.classification_report(y_test, y_pred, target_names<span class="op">=</span>categories))</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>        precision <span class="op">=</span> <span class="bu">dict</span>()</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>        recall <span class="op">=</span> <span class="bu">dict</span>()</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(categories)):</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>            precision[i], recall[i], _ <span class="op">=</span> precision_recall_curve(y_test[:, i],</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>                                                        predict_p[:, i])</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>            plt.plot(recall[i], precision[i], lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'class </span><span class="sc">{}</span><span class="st">'</span>.<span class="bu">format</span>(categories[i]))</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>        plt.xlabel(<span class="st">"Recall"</span>)</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>        plt.ylabel(<span class="st">"Precision"</span>)</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>        plt.title(<span class="st">"Precision-Recall Curve"</span>)</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>        plt.legend(loc<span class="op">=</span><span class="st">"lower left"</span>)</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>        plt.show()<span class="op">;</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>        <span class="co"># roc curve</span></span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>        fpr <span class="op">=</span> <span class="bu">dict</span>()</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>        tpr <span class="op">=</span> <span class="bu">dict</span>()</span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(categories)):</span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>            fpr[i], tpr[i], _ <span class="op">=</span> roc_curve(y_test[:, i],predict_p[:, i])</span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>            plt.plot(fpr[i], tpr[i], lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'class </span><span class="sc">{}</span><span class="st">'</span>.<span class="bu">format</span>(categories[i]))</span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>        plt.xlabel(<span class="st">"false positive rate"</span>)</span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>        plt.ylabel(<span class="st">"true positive rate"</span>)</span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>        plt.legend(loc<span class="op">=</span><span class="st">"best"</span>)</span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>        plt.title(<span class="st">"ROC curve"</span>)</span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>        plt.show()<span class="op">;</span></span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> model,tfidf_vect</span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span>:</span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>        y_pred <span class="op">=</span> model.predict(X_test)</span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(metrics.classification_report(y_test, y_pred, target_names<span class="op">=</span>categories))</span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'The base model has no predict_proba function. ROC, PRC curve cannot be plotted!'</span>)</span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> model,tfidf_vect</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="support-vector-machine" class="level4">
+<h4 class="anchored" data-anchor-id="support-vector-machine">Support Vector Machine</h4>
+<div class="cell" data-outputid="98187e8c-9b8d-4420-a5bc-ad7976a9ba76">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>base_model <span class="op">=</span> LinearSVC()</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>train_df, test_df <span class="op">=</span> train_test_split(df, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>_,_<span class="op">=</span> supervised_learning(train_df, test_df, min_df <span class="op">=</span> <span class="dv">1</span>, stopwords <span class="op">=</span> <span class="st">'english'</span>, base_model <span class="op">=</span>base_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              precision    recall  f1-score   support
+
+          CP       0.64      0.36      0.46       217
+          GN       0.77      0.55      0.64       300
+          MF       0.50      0.30      0.37       257
+          PM       0.68      0.49      0.57       179
+          PR       0.56      0.43      0.49       215
+          RM       0.71      0.50      0.59       207
+          ST       0.71      0.56      0.63       371
+          TR       0.73      0.46      0.56       184
+
+   micro avg       0.67      0.46      0.55      1930
+   macro avg       0.66      0.46      0.54      1930
+weighted avg       0.67      0.46      0.55      1930
+ samples avg       0.45      0.46      0.45      1930
+
+The base model has no predict_proba function. ROC, PRC curve cannot be plotted!</code></pre>
+</div>
+</div>
+</section>
+<section id="random-forest" class="level4">
+<h4 class="anchored" data-anchor-id="random-forest">Random Forest</h4>
+<div class="cell" data-outputid="c5557c73-25b7-4e4b-96cd-4cd1760d0d52">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>base_model <span class="op">=</span> RandomForestClassifier()</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>train_df, test_df <span class="op">=</span> train_test_split(df, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>model,tfidf_vect <span class="op">=</span> supervised_learning(train_df, test_df, min_df <span class="op">=</span> <span class="dv">1</span>, stopwords <span class="op">=</span> <span class="st">'english'</span>, base_model <span class="op">=</span>base_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              precision    recall  f1-score   support
+
+          CP       0.66      0.41      0.51       217
+          GN       0.66      0.72      0.69       300
+          MF       0.49      0.38      0.43       257
+          PM       0.61      0.64      0.62       179
+          PR       0.56      0.67      0.61       215
+          RM       0.69      0.64      0.66       207
+          ST       0.62      0.76      0.68       371
+          TR       0.66      0.64      0.65       184
+
+   micro avg       0.62      0.62      0.62      1930
+   macro avg       0.62      0.61      0.61      1930
+weighted avg       0.62      0.62      0.61      1930
+ samples avg       0.62      0.62      0.62      1930
+</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="ml_files/figure-html/cell-14-output-2.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="ml_files/figure-html/cell-14-output-3.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="confusion-matrix" class="level4">
+<h4 class="anchored" data-anchor-id="confusion-matrix">Confusion Matrix</h4>
+<div class="cell" data-outputid="9160c1b9-22f8-47db-e427-295a823d7f26">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> tfidf_vect.transform(test_df[<span class="st">'tokenized_summary_new'</span>])</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> test_df[categories].values</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> np.argmax(y_test, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>predict_p <span class="op">=</span> model.predict_proba(X_test)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> np.zeros_like(predict_p)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>y_pred[np.arange(<span class="bu">len</span>(predict_p)), predict_p.argmax(<span class="dv">1</span>)] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> np.argmax(y_pred, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>label_dict <span class="op">=</span> <span class="bu">dict</span>()</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">8</span>):</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    label_dict[i] <span class="op">=</span> categories[i]</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>y_true_labels <span class="op">=</span> [label_dict[num] <span class="cf">for</span> num <span class="kw">in</span> y_test]</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>y_pred_labels <span class="op">=</span> [label_dict[num] <span class="cf">for</span> num <span class="kw">in</span> y_pred]</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>ConfusionMatrixDisplay.from_predictions(y_true_labels, y_pred_labels,cmap<span class="op">=</span>plt.cm.Blues,values_format<span class="op">=</span><span class="st">'g'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="ml_files/figure-html/cell-15-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-outputid="0c976d41-17ef-48be-9275-c4804d4fb58c">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">#feature importance </span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(categories)):</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    important_features <span class="op">=</span> []</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> feature, importance <span class="kw">in</span> <span class="bu">sorted</span>(<span class="bu">zip</span>(tfidf_vect.get_feature_names_out(), model.estimators_[i].feature_importances_), <span class="op">\</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>                                  key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>):</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>        <span class="co">#print(feature, importance)</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>        important_features.append(feature)</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    top_words<span class="op">=</span>important_features[<span class="dv">0</span>:<span class="dv">10</span>]</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span> (<span class="st">'</span><span class="sc">{}</span><span class="st">: </span><span class="sc">{}</span><span class="st">'</span>.<span class="bu">format</span>(categories[i],top_words))</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>CP: ['carlo', 'monte', 'method', 'numerical', 'option', 'scheme', 'algorithm', 'computational', 'approximation', 'neural']
+
+
+GN: ['economic', 'economy', 'country', 'growth', 'economics', 'risk', 'income', 'production', 'business', 'firm']
+
+
+MF: ['arbitrage', 'problem', 'existence', 'stochastic', 'process', 'optimal', 'model', 'martingale', 'pricing', 'price']
+
+
+PM: ['portfolio', 'optimization', 'investment', 'optimal', 'problem', 'markowitz', 'utility', 'selection', 'strategy', 'constraint']
+
+
+PR: ['pricing', 'option', 'formula', 'price', 'swap', 'volatility', 'derivative', 'european', 'implied', 'model']
+
+
+RM: ['risk', 'measure', 'shortfall', 'loss', 'insurance', 'price', 'systemic', 'market', 'var', 'default']
+
+
+ST: ['series', 'stock', 'correlation', 'index', 'data', 'return', 'prediction', 'time', 'analysis', 'financial']
+
+
+TR: ['book', 'order', 'trading', 'execution', 'impact', 'trader', 'market', 'limit', 'trade', 'volume']
+
+</code></pre>
+</div>
+</div>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./visualization.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Data Visualization</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
