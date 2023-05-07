@@ -6,7 +6,9 @@
       "/scrape.html",
       "/visualization.html",
       "/ml.html",
-      "/dl.html"
+      "/bert_ml.html",
+      "/dl.html",
+      "/fine.html"
     ]
   }
 ]
